@@ -2,6 +2,7 @@
   "name": "@appt-org/samples-core",
   "version": "1.0.0-alpha.1",
   "description": "Core TypeScript library for loading multi-platform code samples",
+  "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
@@ -10,7 +11,8 @@
   ],
   "scripts": {
     "build": "tsc",
-    "prepublishOnly": "npm test && npm run build"
+    "prepublishOnly": "npm test && npm run build",
+    "generate-samples-map": "node scripts/generate-samples-map.js"
   },
   "keywords": [
     "code",
