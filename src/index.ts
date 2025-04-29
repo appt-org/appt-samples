@@ -1,9 +1,3 @@
-export { CodeSample } from './CodeSample';
+export { getCodeSamples } from "./query";
 
-export type { 
-  CodeBlock, 
-  CodeSampleOptions, 
-  CodeSampleResult, 
-  CodeBlocksFetcher,
-  PlatformLabel 
-} from './types';
+export type { Locale, SampleId, Platform } from "./generated/samples-map";

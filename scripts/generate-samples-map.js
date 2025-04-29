@@ -6,7 +6,7 @@ console.log("Generating samples map");
 const samplesRoot = path.resolve(".", "src/data");
 
 // This array will hold each sample entry
-const sampleEntries = [];
+const sampleEntries = {};
 
 const locales = fs.readdirSync(samplesRoot).filter((item) => {
   const fullPath = path.join(samplesRoot, item);
@@ -16,6 +16,7 @@ const locales = fs.readdirSync(samplesRoot).filter((item) => {
 console.log(`[Info] Found ${locales.length} locale(s): ${locales}.`);
 
 for (const locale of locales) {
+  sampleEntries[locale] = {};
   const localePath = path.join(samplesRoot, locale);
 
   // Read all sample directories inside the locale
@@ -24,7 +25,9 @@ for (const locale of locales) {
     return fs.statSync(fullPath).isDirectory();
   });
 
-  console.log(`[Info] Found ${sampleIds.length} samples.`);
+  console.log(
+    `[Info] Found ${sampleIds.length} sample(s) for locale ${locale}.`,
+  );
 
   for (const sampleId of sampleIds) {
     const samplePath = path.join(localePath, sampleId);
@@ -56,37 +59,47 @@ for (const locale of locales) {
       );
     }
 
+    sampleEntries[locale][sampleId] = [];
     for (const platformFile of platformFiles) {
-      // The data property will be a function that returns a dynamic import of the markdown file.
-      // We write it out as a string containing the TS code for the function.
-      const dataFunctionString = `() => import("${platformFile}")`;
-
-      sampleEntries.push({
-        locale,
-        sampleId,
-        platform: path.parse(platformFile).name,
-        data: dataFunctionString,
-      });
+      const platform = path.parse(platformFile).name;
+      sampleEntries[locale][sampleId].push(platform);
     }
   }
 }
 
-let fileContent = `// This file is generated automatically. Do not edit manually.
+const sampleIds = dedupeArray(
+  Object.values(sampleEntries).flatMap(Object.keys),
+);
 
-export const samples = [
-`;
+const platforms = dedupeArray(
+  Object.values(sampleEntries).map(Object.values).flat(2),
+);
 
-for (const entry of sampleEntries) {
-  fileContent += `  {
-    locale: "${entry.locale}",
-    sampleId: "${entry.sampleId}",
-    platform: "${entry.platform}",
-    data: ${entry.data}
-  },
-`;
-}
+const fileContent = `// This file is generated automatically. Do not edit manually.
 
-fileContent += `];
+${unionType(true, "Locale", locales)}
+${unionType(true, "SampleId", sampleIds)}
+${unionType(true, "Platform", platforms)}
+
+export const samples = ${JSON.stringify(sampleEntries, null, 2)} as const satisfies Record<Locale, Record<SampleId, Platform[]>>;
 `;
 
 fs.writeFileSync("src/generated/samples-map.ts", fileContent);
+
+function dedupeArray(arr) {
+  return Array.from(new Set(arr));
+}
+
+function unionType(isExported, name, values) {
+  const unionTypeParts = [];
+
+  isExported && unionTypeParts.push("export");
+  unionTypeParts.push(
+    "type",
+    name,
+    "=",
+    values.map((v) => JSON.stringify(v)).join(" | "),
+  );
+
+  return unionTypeParts.join(" ");
+}
