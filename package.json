@@ -1,5 +1,5 @@
 {
-  "name": "@appt-org/samples-core",
+  "name": "@appt-org/samples",
   "version": "1.0.0-alpha.1",
   "description": "Core TypeScript library for loading multi-platform code samples",
   "type": "module",
@@ -10,10 +10,18 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc",
-    "prepublishOnly": "npm test && npm run build",
+    "build": "vite build",
+    "prepublishOnly": "npm run generate-samples-map && npm run build",
     "generate-samples-map": "node scripts/generate-samples-map.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/appt-org/appt-samples.git"
+  },
+  "bugs": {
+    "url": "https://github.com/appt-org/appt-samples/issues"
+  },
+  "homepage": "https://github.com/appt-org/appt-samples#readme",
   "keywords": [
     "code",
     "sample",
@@ -23,7 +31,7 @@
   "author": {
     "name": "Appt Foundation",
     "email": "info@appt.org",
-    "url": "http://appt.org"
+    "url": "https://appt.org"
   },
   "contributors": [
     {
