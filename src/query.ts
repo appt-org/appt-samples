@@ -5,12 +5,10 @@ import {
   type SampleId,
 } from "./generated/samples-map";
 
-type Suggest<T extends string> = T | (string & {});
-
 interface CodeSamplesQuery {
   locale: Locale;
-  platform?: Array<Suggest<Platform>>;
-  sampleId?: Array<Suggest<SampleId>>;
+  platform?: Array<Platform>;
+  sampleId?: Array<SampleId>;
 }
 
 interface CodeSamplesQueryOptions {
@@ -24,9 +22,35 @@ interface CodeSample {
   content: string;
 }
 
+/**
+ * Retrieves code samples based on specified query parameters and options.
+ *
+ * This function filters code samples by locale, sample ID, and/or platform.
+ *
+ * @param {CodeSamplesQuery} query - The query parameters for filtering code samples
+ * @param {Locale} query.locale - The locale to filter code samples by
+ * @param {SampleId[]} [query.sampleId] - Optional array of sample IDs to filter by
+ * @param {Platform[]} [query.platform] - Optional array of platforms to filter by
+ *
+ * @param {CodeSamplesQueryOptions} [options] - Additional options for the query
+ * @param {number} [options.limit] - Maximum number of code samples to return (defaults to Infinity)
+ *
+ * @returns {CodeSample[]} An array of code samples matching the query parameters
+ *
+ * @example
+ * // Get all code samples for 'en' locale
+ * const allSamples = getCodeSamples({ locale: 'en' });
+ *
+ * @example
+ * // Get up to 5 Android And iOS samples for 'en' locale
+ * const androidAndIosSamples = getCodeSamples(
+ *   { locale: 'en-US', platform: ['android', 'ios'] },
+ *   { limit: 5 }
+ * );
+ */
 export function getCodeSamples(
   query: CodeSamplesQuery,
-  options: CodeSamplesQueryOptions,
+  options: CodeSamplesQueryOptions = {},
 ): CodeSample[] {
   const results: CodeSample[] = [];
   const limit = options.limit ?? Infinity;
