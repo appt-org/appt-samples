@@ -84,7 +84,7 @@ ${unionType(true, "Platform", platforms)}
 export const samples = ${JSON.stringify(sampleEntries, null, 2)} as const satisfies Record<Locale, Record<SampleId, Platform[]>>;
 `;
 
-fs.writeFileSync("src/generated/samples-map.ts", fileContent);
+fs.writeFileSync("src/generated.ts", fileContent);
 
 function dedupeArray(arr) {
   return Array.from(new Set(arr));

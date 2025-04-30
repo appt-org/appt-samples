@@ -3,7 +3,7 @@ import {
   type Locale,
   type Platform,
   type SampleId,
-} from "./generated/samples-map";
+} from "./generated";
 
 interface CodeSamplesQuery {
   locale: Locale;
@@ -48,10 +48,10 @@ interface CodeSample {
  *   { limit: 5 }
  * );
  */
-export function getCodeSamples(
+export async function getCodeSamples(
   query: CodeSamplesQuery,
   options: CodeSamplesQueryOptions = {},
-): CodeSample[] {
+): Promise<CodeSample[]> {
   const results: CodeSample[] = [];
   const limit = options.limit ?? Infinity;
   const locale = query.locale;
@@ -74,8 +74,10 @@ export function getCodeSamples(
       : platformsForSample;
 
     for (const platform of filteredPlatforms) {
-      // TODO: properly load MarkDown content
-      const content = "";
+      const content = await import(
+        getImportPathForCodeSample(locale, sampleId, platform)
+      );
+
       results.push({ locale, sampleId, platform, content });
 
       if (results.length >= limit) {
@@ -92,5 +94,5 @@ function getImportPathForCodeSample(
   sampleId: SampleId,
   platform: Platform,
 ) {
-  return `../data/${locale}/${sampleId}/${platform}.md`;
+  return `./data/${locale}/${sampleId}/${platform}.md`;
 }
