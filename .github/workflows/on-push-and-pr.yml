@@ -18,6 +18,8 @@ jobs:
         run: npm ci
       - name: Install & type-check scripts project
         run: cd scripts && npm ci && npm run type-check
+      - name: Generate samples map
+        run: cd scripts && npm run generate-samples-map
       - name: Install & type-check lib project
         run: cd lib && npm ci && npm run type-check
 
