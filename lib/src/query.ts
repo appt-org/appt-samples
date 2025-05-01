@@ -142,5 +142,5 @@ function getImportPathForCodeSample(
   sampleId: SampleId,
   platform: Platform,
 ) {
-  return `@appt.org/samples/data/${locale}/${sampleId}/${platform}.md`;
+  return `@appt.org/samples/code-samples/${locale}.${sampleId}.${platform}.md`;
 }
