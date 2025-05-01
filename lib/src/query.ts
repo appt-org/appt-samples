@@ -44,7 +44,7 @@ interface CodeSample {
  * @example
  * // Get up to 5 Android And iOS samples for 'en' locale
  * const androidAndIosSamples = getCodeSamples(
- *   { locale: 'en-US', platform: ['android', 'ios'] },
+ *   { locale: 'en', platform: ['android', 'ios'] },
  *   { limit: 5 }
  * );
  */
