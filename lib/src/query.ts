@@ -90,7 +90,7 @@ export function getCodeSamples(
   return results;
 }
 
-interface OnePlatformCodeSampleQuery {
+interface GetCodeSampleForOnePlatformQuery {
   locale: Locale;
   sampleId: SampleId;
   platform: Platform;
@@ -101,7 +101,7 @@ interface OnePlatformCodeSampleQuery {
  *
  * This function retrieves the code sample by locale, sample ID, and platform.
  *
- * @param {CodeSamplesQuery} query - The query parameters for retrieving the code sample
+ * @param {GetCodeSampleForOnePlatformQuery} query - The query parameters for retrieving the code sample
  * @param {Locale} query.locale - The locale to retrieve code sample for
  * @param {SampleId[]} [query.sampleId] - The sampleId to retrieve code sample for
  * @param {Platform[]} [query.platform] - The platforms to retrieve code sample for
@@ -115,7 +115,7 @@ interface OnePlatformCodeSampleQuery {
  * );
  */
 export function getCodeSampleForOnePlatform(
-  query: OnePlatformCodeSampleQuery,
+  query: GetCodeSampleForOnePlatformQuery,
 ): CodeSample | null {
   const sampleExists = samples[query.locale]?.[query.sampleId]?.includes(
     query.platform,
