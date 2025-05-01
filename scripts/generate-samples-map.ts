@@ -1,9 +1,10 @@
 import fs from "node:fs";
 import path from "node:path";
+import { dedupeArray, unionType } from "./utils.ts";
 
 console.log("Generating samples map");
 
-const samplesRoot = path.resolve(".", "src/data");
+const samplesRoot = path.resolve("..", "data");
 
 // This array will hold each sample entry
 const sampleEntries: Record<string, Record<string, string[]>> = {};
@@ -84,22 +85,4 @@ ${unionType(true, "Platform", platforms)}
 export const samples = ${JSON.stringify(sampleEntries, null, 2)} as const satisfies Record<Locale, Record<SampleId, Platform[]>>;
 `;
 
-fs.writeFileSync("src/generated.ts", fileContent);
-
-function dedupeArray<T extends number | string>(arr: T[]): T[] {
-  return Array.from(new Set(arr));
-}
-
-function unionType(isExported: boolean, name: string, values: string[]) {
-  const unionTypeParts = [];
-
-  isExported && unionTypeParts.push("export");
-  unionTypeParts.push(
-    "type",
-    name,
-    "=",
-    values.map((v) => JSON.stringify(v)).join(" | "),
-  );
-
-  return unionTypeParts.join(" ");
-}
+fs.writeFileSync("../lib/src/generated.ts", fileContent);

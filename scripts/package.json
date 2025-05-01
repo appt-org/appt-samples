@@ -1,7 +1,8 @@
 {
+  "type": "module",
   "scripts": {
     "type-check": "tsc",
-    "generate-samples-map": "node generate-samples-map.ts --experimental-strip-types"
+    "generate-samples-map": "node --experimental-strip-types generate-samples-map.ts"
   },
   "keywords": [],
   "license": "MIT",
