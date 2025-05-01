@@ -20,3 +20,11 @@ jobs:
         run: cd scripts && npm ci && npm run type-check
       - name: Install & type-check lib project
         run: cd lib && npm ci && npm run type-check
+
+      # ---- Verify that committed generated sample is up-to-date ----
+      - name: Verify that the generated sample map is up-to-date
+        run: |
+          if ! git diff --exit-code -- lib/src/generated.ts; then
+            echo "::error ::'lib/src/generated.ts' is not up to date. Please run 'npm run generate-samples-map' and commit the changes.";
+            exit 1
+          fi

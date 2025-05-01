@@ -27,6 +27,14 @@ jobs:
       - name: Build lib project
         run: cd lib && npm run build
 
+      # ---- Verify that committed generated sample is up-to-date ----
+      - name: Verify that the generated sample map is up-to-date
+        run: |
+          if ! git diff --exit-code -- lib/src/generated.ts; then
+            echo "::error ::'lib/src/generated.ts' is not up to date. Please run 'npm run generate-samples-map' and commit the changes.";
+            exit 1
+          fi
+
       # ---- Verify that the release tag is the same as the specified version in the package.json ----
       - name: Verify version consistency
         run: |
