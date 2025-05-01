@@ -1,65 +1,13 @@
 {
-  "name": "@appt-org/samples",
-  "version": "1.0.0-alpha.1",
-  "description": "Core TypeScript library for loading multi-platform code samples",
-  "type": "module",
-  "main": "dist/index.js",
-  "module": "dist/index.esm.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
   "scripts": {
-    "build": "vite build",
-    "prepublishOnly": "npm run generate-samples-map && npm run build",
-    "generate-samples-map": "node scripts/generate-samples-map.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/appt-org/appt-samples.git"
-  },
-  "bugs": {
-    "url": "https://github.com/appt-org/appt-samples/issues"
-  },
-  "homepage": "https://github.com/appt-org/appt-samples#readme",
-  "keywords": [
-    "code",
-    "sample",
-    "typescript",
-    "multi-platform"
-  ],
-  "author": {
-    "name": "Appt Foundation",
-    "email": "info@appt.org",
-    "url": "https://appt.org"
-  },
-  "contributors": [
-    {
-      "name": "Lisa Klein"
-    },
-    {
-      "name": "Layla Hoogeveen"
-    },
-    {
-      "name": "Djovanni Tehubijuluw"
-    },
-    {
-      "name": "Jan Jaap de Groot"
-    }
-  ],
+  "keywords": [],
   "license": "MIT",
   "devDependencies": {
-    "prettier": "^3.5.3",
-    "rollup-plugin-copy": "^3.5.0",
-    "typescript": "^5.0.0",
-    "vite": "^6.3.1",
-    "vite-plugin-dts": "^4.5.3",
-    "vite-plugin-markdown": "^2.2.0"
-  },
-  "publishConfig": {
-    "access": "public"
+    "prettier": "^3.5.3"
   },
   "volta": {
-    "node": "22.14.0"
+    "node": "22.15.0"
   }
 }

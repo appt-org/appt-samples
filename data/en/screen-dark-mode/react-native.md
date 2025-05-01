@@ -5,24 +5,24 @@ With React Native, you can detect dark mode by checking if the [`Appearance.getC
 When defining a [`ThemeProvider`](https://reactnativeelements.com/docs/customization/themprovider) you can return a different theme when dark mode is active.
 
 ```jsx
-import { useColorScheme } from 'react-native';
+import { useColorScheme } from 'data/en/screen-dark-mode/react-native';
 import { ThemeProvider } from 'styled-components';
 
 const darkTheme = {
-    primary: "#f967e9",
+  primary: "#f967e9",
 };
-    
+
 const lighTheme = {
-    primary: "#cc00b9"
+  primary: "#cc00b9"
 };
 
 const App: React.FC = () => {
-    const scheme = useColorScheme();
-    return (
+  const scheme = useColorScheme();
+  return (
     <ThemeProvider theme={scheme === 'dark' ? darkTheme : lightTheme}>
-        {props.children}
+      {props.children}
     </ThemeProvider>
-    );
+  );
 }
 
 export default App;

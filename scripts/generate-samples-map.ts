@@ -6,7 +6,7 @@ console.log("Generating samples map");
 const samplesRoot = path.resolve(".", "src/data");
 
 // This array will hold each sample entry
-const sampleEntries = {};
+const sampleEntries: Record<string, Record<string, string[]>> = {};
 
 const locales = fs.readdirSync(samplesRoot).filter((item) => {
   const fullPath = path.join(samplesRoot, item);
@@ -41,7 +41,7 @@ for (const locale of locales) {
         return fs.statSync(fullPath).isFile() && isMarkdownFile;
       })
       .map((item) => path.join("data", locale, sampleId, item))
-      .reduce(
+      .reduce<{ readme: string | null; platformFiles: string[] }>(
         (acc, item) => {
           const isReadme = path.basename(item).toLowerCase() === "readme.md";
           if (isReadme) {
@@ -86,11 +86,11 @@ export const samples = ${JSON.stringify(sampleEntries, null, 2)} as const satisf
 
 fs.writeFileSync("src/generated.ts", fileContent);
 
-function dedupeArray(arr) {
+function dedupeArray<T extends number | string>(arr: T[]): T[] {
   return Array.from(new Set(arr));
 }
 
-function unionType(isExported, name, values) {
+function unionType(isExported: boolean, name: string, values: string[]) {
   const unionTypeParts = [];
 
   isExported && unionTypeParts.push("export");

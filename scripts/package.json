@@ -1,0 +1,15 @@
+{
+  "scripts": {
+    "type-check": "tsc",
+    "generate-samples-map": "node generate-samples-map.ts --experimental-strip-types"
+  },
+  "keywords": [],
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.15.3",
+    "typescript": "^5.8.3"
+  },
+  "volta": {
+    "extends": "../package.json"
+  }
+}
