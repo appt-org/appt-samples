@@ -1,3 +1,3 @@
-export { getCodeSamples } from "./query";
+export { getCodeSamples, getCodeSampleForOnePlatform } from "./query";
 
 export type { Locale, SampleId, Platform } from "./generated";

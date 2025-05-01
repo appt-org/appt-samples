@@ -89,6 +89,53 @@ export async function getCodeSamples(
   return results;
 }
 
+interface OnePlatformCodeSampleQuery {
+  locale: Locale;
+  sampleId: SampleId;
+  platform: Platform;
+}
+
+/**
+ * Retrieves a single code samples for a single platform, based on specified parameters.
+ *
+ * This function retrieves the code sample by locale, sample ID, and platform.
+ *
+ * @param {CodeSamplesQuery} query - The query parameters for retrieving the code sample
+ * @param {Locale} query.locale - The locale to retrieve code sample for
+ * @param {SampleId[]} [query.sampleId] - The sampleId to retrieve code sample for
+ * @param {Platform[]} [query.platform] - The platforms to retrieve code sample for
+ *
+ * @returns {CodeSample[] | null} An array of code samples matching the query parameters, or `null` if no sample exists
+ *
+ * @example
+ * // Get the Android screen-dark-mode sample for 'en' locale
+ * const androidScreenDarkModeSample = getCodeSamples(
+ *  { locale: 'en', sampleId: 'screen-dark-mode', platform: 'android' }
+ * );
+ */
+export function getCodeSampleForOnePlatform(
+  query: OnePlatformCodeSampleQuery,
+): CodeSample | null {
+  const sampleExists = samples[query.locale]?.[query.sampleId]?.includes(
+    query.platform,
+  );
+
+  if (!sampleExists) {
+    return null;
+  }
+
+  return {
+    locale: query.locale,
+    sampleId: query.sampleId,
+    platform: query.platform,
+    content: getImportPathForCodeSample(
+      query.locale,
+      query.sampleId,
+      query.platform,
+    ),
+  };
+}
+
 function getImportPathForCodeSample(
   locale: Locale,
   sampleId: SampleId,
