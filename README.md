@@ -154,8 +154,11 @@ npm run generate-samples-map
 ## Publishing a new version
 
 New versions are automatically published to the NPM registry through GitHub actions. This happens when a new release is
-created in GitHub ([link](https://github.com/appt-org/appt-samples/releases/new)). When creating a new release, make
-sure the 'version' field in the `lib/package.json` has the correct new version specified.
+created in GitHub ([link](https://github.com/appt-org/appt-samples/releases/new)).
+
+When creating a new release, make sure the 'version' field in the `lib/package.json` has the correct new version
+specified. If the version in the `package.json` does not match the release tag (can still contain `v` prefix), the
+pipeline fails.
 
 ## License
 
