@@ -1,6 +1,6 @@
 {
   "name": "@appt.org/samples",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "description": "Core TypeScript library for loading multi-platform code samples",
   "type": "module",
   "main": "./dist/index.js",
