@@ -1,5 +1,5 @@
 {
-  "name": "@appt-org/samples",
+  "name": "@appt.org/samples",
   "version": "1.0.0-alpha.1",
   "description": "Core TypeScript library for loading multi-platform code samples",
   "type": "module",

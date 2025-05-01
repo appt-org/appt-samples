@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "install-all": "npm i && cd scripts && npm i && cd ../lib && npm i"
   },
   "keywords": [],
   "license": "MIT",

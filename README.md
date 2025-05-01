@@ -21,7 +21,7 @@ To use the package in your project, follow the steps below.
 
 ```shell
 # Install the dependency
-npm i @appt-org/samples
+npm i @appt.org/samples
 ```
 
 ### Bundler configuration
@@ -31,7 +31,8 @@ of Markdown (.md) files. Below are setup instructions for popular JavaScript env
 
 #### Vite
 
-For Vite, you can use vite-plugin-markdown to import Markdown files as raw Markdown, as Vue/React components or as structured data (e.g., frontmatter + HTML).
+For Vite, you can use vite-plugin-markdown to import Markdown files as raw Markdown, as Vue/React components or as
+structured data (e.g., frontmatter + HTML).
 
 Install the plugin:
 
@@ -46,9 +47,9 @@ import { defineConfig } from 'vite'
 import { plugin as markdownPlugin, Mode } from "vite-plugin-markdown";
 
 export default defineConfig({
-    plugins: [
-      markdownPlugin({ mode: [Mode.HTML, Mode.MARKDOWN, Mode.TOC, Mode.REACT, Mode.VUE] }) // Choose modes as needed
-    ],
+  plugins: [
+    markdownPlugin({ mode: [Mode.HTML, Mode.MARKDOWN, Mode.TOC, Mode.REACT, Mode.VUE] }) // Choose modes as needed
+  ],
 })
 ```
 
@@ -74,17 +75,17 @@ Update your `next.config.js`:
 
 ```js
 import createMDX from '@next/mdx'
- 
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Configure `pageExtensions` to include markdown and MDX files
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
 }
- 
+
 const withMDX = createMDX({
   // Add markdown plugins here, as desired
 })
- 
+
 // Merge MDX config with Next.js config
 export default withMDX(nextConfig)
 ```
@@ -109,11 +110,52 @@ Import as a component:
 import Doc from '@site/docs/README.md'
 
 export default function Page() {
-return <Doc />
+  return <Doc />
 }
 ```
 
 To access frontmatter or metadata, use the useDoc or useMDXComponent hooks if needed.
+
+## Local setup
+
+### Prerequisites
+
+<!-- 
+   Which software or libraries are needed to be able to install this project?
+ -->
+
+- [Volta](https://volta.sh/) for Node version management
+- Access to the [appt-samples GitHub repository](https://github.com/appt-org/appt-samples)
+
+### Steps
+
+```shell
+# Clone the repository
+git clone https://github.com/appt-org/appt-samples.git
+
+# Go to the correct directory
+cd appt-samples
+
+# Install the dependencies in all directories (/, /scripts & /lib)
+npm run install-all
+```
+
+### Generating the samples map
+
+The library uses a generated file which contains the samples that are available, as well as the locales and platforms.
+This samples map should be re-generated after adding or removing a code sample in the `/data` directory (not needed if a
+file is edited). A new generation can be triggered like this:
+
+```shell
+# Run this in the /scripts directory
+npm run generate-samples-map
+```
+
+## Publishing a new version
+
+New versions are automatically published to the NPM registry through GitHub actions. This happens when a new release is
+created in GitHub ([link](https://github.com/appt-org/appt-samples/releases/new)). When creating a new release, make
+sure the 'version' field in the `lib/package.json` has the correct new version specified.
 
 ## License
 
