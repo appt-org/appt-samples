@@ -19,7 +19,7 @@ interface CodeSample {
   locale: Locale;
   sampleId: SampleId;
   platform: Platform;
-  content: string;
+  contentPath: string;
 }
 
 /**
@@ -48,10 +48,10 @@ interface CodeSample {
  *   { limit: 5 }
  * );
  */
-export async function getCodeSamples(
+export function getCodeSamples(
   query: CodeSamplesQuery,
   options: CodeSamplesQueryOptions = {},
-): Promise<CodeSample[]> {
+): CodeSample[] {
   const results: CodeSample[] = [];
   const limit = options.limit ?? Infinity;
   const locale = query.locale;
@@ -74,11 +74,12 @@ export async function getCodeSamples(
       : platformsForSample;
 
     for (const platform of filteredPlatforms) {
-      const content = await import(
-        getImportPathForCodeSample(locale, sampleId, platform)
-      );
-
-      results.push({ locale, sampleId, platform, content });
+      results.push({
+        locale,
+        sampleId,
+        platform,
+        contentPath: getImportPathForCodeSample(locale, sampleId, platform),
+      });
 
       if (results.length >= limit) {
         return results;
@@ -128,7 +129,7 @@ export function getCodeSampleForOnePlatform(
     locale: query.locale,
     sampleId: query.sampleId,
     platform: query.platform,
-    content: getImportPathForCodeSample(
+    contentPath: getImportPathForCodeSample(
       query.locale,
       query.sampleId,
       query.platform,
