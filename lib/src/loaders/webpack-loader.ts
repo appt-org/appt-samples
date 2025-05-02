@@ -18,15 +18,11 @@ export function createWebpackLoader(webpackContext: WebpackContext): Loader {
       return map;
     }, {});
 
-  return async function loader(codeSampleMetadata) {
-    const lookupKey =
-      constructLookupKeyForCodeSampleMetadata(codeSampleMetadata);
+  return async function loader(locale, sampleId, platform) {
+    const lookupKey = constructLookupKey(locale, sampleId, platform);
     const relativePath = pathMap[lookupKey];
 
-    return {
-      ...codeSampleMetadata,
-      content: await webpackContext(relativePath),
-    };
+    return await webpackContext(relativePath);
   };
 }
 
@@ -61,14 +57,4 @@ function constructLookupKeyForRelativePath(relativePath: string) {
   }
 
   return constructLookupKey(sampleMeta[0], sampleMeta[1], sampleMeta[2]);
-}
-
-function constructLookupKeyForCodeSampleMetadata(
-  codeSampleMetadata: CodeSampleMetadata,
-) {
-  return constructLookupKey(
-    codeSampleMetadata.locale,
-    codeSampleMetadata.sampleId,
-    codeSampleMetadata.platform,
-  );
 }

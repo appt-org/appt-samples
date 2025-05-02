@@ -4,7 +4,8 @@ import {
   type Platform,
   type SampleId,
 } from "./generated";
-import { CodeSample, CodeSampleMetadata, Loader } from "./types";
+import type { CodeSample, Loader } from "./types";
+import { platformIdToLabelMap } from "./platforms";
 
 interface CodeSamplesQuery {
   locale: Locale;
@@ -71,15 +72,17 @@ export async function getCodeSamples(
       : platformsForSample;
 
     for (const platform of filteredPlatforms) {
-      const metadata: CodeSampleMetadata = {
+      results.push({
         locale,
         sampleId,
-        platform,
+        platform: {
+          id: platform,
+          label: platformIdToLabelMap[platform],
+        },
         contentPath: getImportPathForCodeSample(locale, sampleId, platform),
         contributionUrl: getContributionUrl(locale, sampleId, platform),
-      };
-
-      results.push(await loader(metadata));
+        content: await loader(locale, sampleId, platform),
+      });
 
       if (results.length >= limit) {
         return results;
@@ -128,10 +131,13 @@ export async function getCodeSampleForOnePlatform(
     return null;
   }
 
-  const metadata: CodeSampleMetadata = {
+  return {
     locale: query.locale,
     sampleId: query.sampleId,
-    platform: query.platform,
+    platform: {
+      id: query.platform,
+      label: platformIdToLabelMap[query.platform],
+    },
     contentPath: getImportPathForCodeSample(
       query.locale,
       query.sampleId,
@@ -142,9 +148,8 @@ export async function getCodeSampleForOnePlatform(
       query.sampleId,
       query.platform,
     ),
+    content: loader(query.locale, query.sampleId, query.platform),
   };
-
-  return await loader(metadata);
 }
 
 function getImportPathForCodeSample(

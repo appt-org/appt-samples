@@ -3,7 +3,10 @@ import type { Locale, Platform, SampleId } from "./generated";
 export interface CodeSampleMetadata {
   locale: Locale;
   sampleId: SampleId;
-  platform: Platform;
+  platform: {
+    id: Platform;
+    label: string;
+  };
   contributionUrl: string;
   contentPath: string;
 }
@@ -13,6 +16,9 @@ export interface CodeSample extends CodeSampleMetadata {
   content: any;
 }
 
+// TODO: add jsdoc comment about the type
 export type Loader = (
-  codeSampleMetadata: CodeSampleMetadata,
-) => Promise<CodeSample>;
+  locale: Locale,
+  sampleId: SampleId,
+  platform: Platform,
+) => Promise<any>;
