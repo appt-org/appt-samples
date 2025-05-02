@@ -19,6 +19,7 @@ interface CodeSample {
   locale: Locale;
   sampleId: SampleId;
   platform: Platform;
+  contributionUrl: string;
   contentPath: string;
 }
 
@@ -79,6 +80,7 @@ export function getCodeSamples(
         sampleId,
         platform,
         contentPath: getImportPathForCodeSample(locale, sampleId, platform),
+        contributionUrl: getContributionUrl(locale, sampleId, platform),
       });
 
       if (results.length >= limit) {
@@ -134,6 +136,11 @@ export function getCodeSampleForOnePlatform(
       query.sampleId,
       query.platform,
     ),
+    contributionUrl: getContributionUrl(
+      query.locale,
+      query.sampleId,
+      query.platform,
+    ),
   };
 }
 
@@ -143,4 +150,12 @@ function getImportPathForCodeSample(
   platform: Platform,
 ) {
   return `@appt.org/samples/code-samples/${locale}.${sampleId}.${platform}.md`;
+}
+
+function getContributionUrl(
+  locale: Locale,
+  sampleId: SampleId,
+  platform: Platform,
+) {
+  return `https://github.com/appt-org/appt-website/tree/develop/src/data/code-samples/${locale}/${sampleId}/${platform}.md`;
 }
