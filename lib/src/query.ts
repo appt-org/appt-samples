@@ -79,10 +79,7 @@ export async function getCodeSamples(
         contributionUrl: getContributionUrl(locale, sampleId, platform),
       };
 
-      results.push({
-        ...metadata,
-        content: await loader(metadata),
-      });
+      results.push(await loader(metadata));
 
       if (results.length >= limit) {
         return results;
