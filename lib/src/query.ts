@@ -4,6 +4,7 @@ import {
   type Platform,
   type SampleId,
 } from "./generated";
+import { CodeSample, CodeSampleMetadata, Loader } from "./types";
 
 interface CodeSamplesQuery {
   locale: Locale;
@@ -15,19 +16,12 @@ interface CodeSamplesQueryOptions {
   limit?: number;
 }
 
-interface CodeSample {
-  locale: Locale;
-  sampleId: SampleId;
-  platform: Platform;
-  contributionUrl: string;
-  contentPath: string;
-}
-
 /**
  * Retrieves code samples based on specified query parameters and options.
  *
  * This function filters code samples by locale, sample ID, and/or platform.
  *
+ * @param {Loader} loader - The loader to use
  * @param {CodeSamplesQuery} query - The query parameters for filtering code samples
  * @param {Locale} query.locale - The locale to filter code samples by
  * @param {SampleId[]} [query.sampleId] - Optional array of sample IDs to filter by
@@ -40,19 +34,21 @@ interface CodeSample {
  *
  * @example
  * // Get all code samples for 'en' locale
- * const allSamples = getCodeSamples({ locale: 'en' });
+ * const allSamples = getCodeSamples(loader, { locale: 'en' });
  *
  * @example
  * // Get up to 5 Android And iOS samples for 'en' locale
  * const androidAndIosSamples = getCodeSamples(
+ *   loader,
  *   { locale: 'en', platform: ['android', 'ios'] },
  *   { limit: 5 }
  * );
  */
-export function getCodeSamples(
+export async function getCodeSamples(
+  loader: Loader,
   query: CodeSamplesQuery,
   options: CodeSamplesQueryOptions = {},
-): CodeSample[] {
+): Promise<CodeSample[]> {
   const results: CodeSample[] = [];
   const limit = options.limit ?? Infinity;
   const locale = query.locale;
@@ -75,12 +71,17 @@ export function getCodeSamples(
       : platformsForSample;
 
     for (const platform of filteredPlatforms) {
-      results.push({
+      const metadata: CodeSampleMetadata = {
         locale,
         sampleId,
         platform,
         contentPath: getImportPathForCodeSample(locale, sampleId, platform),
         contributionUrl: getContributionUrl(locale, sampleId, platform),
+      };
+
+      results.push({
+        ...metadata,
+        content: await loader(metadata),
       });
 
       if (results.length >= limit) {
@@ -103,6 +104,7 @@ interface GetCodeSampleForOnePlatformQuery {
  *
  * This function retrieves the code sample by locale, sample ID, and platform.
  *
+ * @param {Loader} loader - The loader to use
  * @param {GetCodeSampleForOnePlatformQuery} query - The query parameters for retrieving the code sample
  * @param {Locale} query.locale - The locale to retrieve code sample for
  * @param {SampleId[]} [query.sampleId] - The sampleId to retrieve code sample for
@@ -113,12 +115,14 @@ interface GetCodeSampleForOnePlatformQuery {
  * @example
  * // Get the Android screen-dark-mode sample for 'en' locale
  * const androidScreenDarkModeSample = getCodeSamples(
+ *  loader,
  *  { locale: 'en', sampleId: 'screen-dark-mode', platform: 'android' }
  * );
  */
-export function getCodeSampleForOnePlatform(
+export async function getCodeSampleForOnePlatform(
+  loader: Loader,
   query: GetCodeSampleForOnePlatformQuery,
-): CodeSample | null {
+): Promise<CodeSample | null> {
   const sampleExists = samples[query.locale]?.[query.sampleId]?.includes(
     query.platform,
   );
@@ -127,7 +131,7 @@ export function getCodeSampleForOnePlatform(
     return null;
   }
 
-  return {
+  const metadata: CodeSampleMetadata = {
     locale: query.locale,
     sampleId: query.sampleId,
     platform: query.platform,
@@ -142,6 +146,8 @@ export function getCodeSampleForOnePlatform(
       query.platform,
     ),
   };
+
+  return await loader(metadata);
 }
 
 function getImportPathForCodeSample(
