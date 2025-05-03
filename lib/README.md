@@ -90,6 +90,9 @@ const codeSample = await getCodeSample(loader, {
   locale: 'en',
   sampleId: 'screen-dark-mode'
 });
+
+// The imported markdown file is available under codeSample.frameworks[framework].content.
+// The value of `content` depends on your own Webpack configuration.
 ```
 
 #### Creating Custom Loaders
