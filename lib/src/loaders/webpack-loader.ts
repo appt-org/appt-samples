@@ -19,14 +19,14 @@ export function createWebpackLoader(webpackContext: WebpackContext): Loader {
     }, {});
 
   return {
-    loadSampleIntroduction: async (locale, sampleId) => {
-      const lookupKey = constructLookupKey(locale, sampleId, "README");
+    loadTopicIntroduction: async (locale, topicId) => {
+      const lookupKey = constructLookupKey(locale, topicId, "README");
       const relativePath = pathMap[lookupKey];
 
       return await webpackContext(relativePath);
     },
-    loadFrameworkSample: async (locale, sampleId, framework) => {
-      const lookupKey = constructLookupKey(locale, sampleId, framework);
+    loadCodeSample: async (locale, topicId, framework) => {
+      const lookupKey = constructLookupKey(locale, topicId, framework);
       const relativePath = pathMap[lookupKey];
 
       return await webpackContext(relativePath);
@@ -35,14 +35,14 @@ export function createWebpackLoader(webpackContext: WebpackContext): Loader {
 }
 
 /**
- * Constructs a lookup-key with the format `[locale].[sampleId].[framework]`.
+ * Constructs a lookup-key with the format `[locale].[topicId].[framework]`.
  */
 function constructLookupKey(
   locale: string,
-  sampleId: string,
+  topicId: string,
   framework: string,
 ) {
-  return `${locale}.${sampleId}.${framework}`;
+  return `${locale}.${topicId}.${framework}`;
 }
 
 /**
@@ -56,7 +56,7 @@ function constructLookupKeyForRelativePath(relativePath: string) {
     );
   }
 
-  // Get from the filename: [locale, sampleId, framework]
+  // Get from the filename: [locale, topicId, framework]
   const sampleMeta = filename.split(".").slice(0, 3);
   if (sampleMeta.length !== 3) {
     throw new Error(

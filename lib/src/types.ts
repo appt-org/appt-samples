@@ -1,13 +1,13 @@
-import type { Locale, Framework, SampleId } from "./generated";
+import type { Locale, Framework, TopicId } from "./generated";
 
-export interface CodeSample {
+export interface Topic {
   locale: Locale;
-  sampleId: SampleId;
+  topicId: TopicId;
   introduction: ImportableMarkdown;
-  frameworks: FrameworkCodeSample[];
+  codeSamples: CodeSample[];
 }
 
-export interface FrameworkCodeSample extends ImportableMarkdown {
+export interface CodeSample extends ImportableMarkdown {
   framework: {
     id: Framework;
     label: string;
@@ -15,12 +15,12 @@ export interface FrameworkCodeSample extends ImportableMarkdown {
 }
 
 export interface Loader {
-  loadFrameworkSample: (
+  loadCodeSample: (
     locale: Locale,
-    sampleId: SampleId,
+    topicId: TopicId,
     framework: Framework,
   ) => Promise<any>;
-  loadSampleIntroduction: (locale: Locale, sampleId: SampleId) => Promise<any>;
+  loadTopicIntroduction: (locale: Locale, topicId: TopicId) => Promise<any>;
 }
 
 interface ImportableMarkdown {

@@ -2,104 +2,100 @@ import {
   samples,
   type Locale,
   type Framework,
-  type SampleId,
+  type TopicId,
 } from "../generated";
-import type { CodeSample, Loader } from "../types";
+import type { Topic, Loader } from "../types";
 import {
   getContributionUrlForIntroduction,
-  getContributionUrlForFrameworkCodeSample,
+  getContributionUrlForCodeSample,
   getImportPathForIntroduction,
-  getImportPathForFrameworkCodeSample,
+  getImportPathForCodeSample,
 } from "./utils";
 import { frameworkIdToLabelMap } from "../frameworks";
 
 interface CodeSamplesQuery {
   locale: Locale;
-  sampleId?: Array<SampleId>;
+  topicId?: Array<TopicId>;
   framework?: Array<Framework>;
 }
 
 /**
- * Retrieves code samples based on specified query parameters and options.
+ * Retrieves topics and code samples based on specified query parameters and options.
  *
- * This function filters code samples by locale, sample ID, and/or framework.
- * If the sample-id or framework parameters are left empty, everything is retrieved.
+ * This function filters topics and code-samples by locale, topic-id, and/or framework.
+ * If the topic-id or framework parameters are left empty, everything is retrieved.
  *
  * @param {Loader} loader - The loader to use
  * @param {CodeSamplesQuery} query - The query parameters for filtering code samples
  * @param {Locale} query.locale - The locale to get code samples from
- * @param {SampleId[]} [query.sampleId] - An optional array of sample IDs to retrieve by
+ * @param {SampleId[]} [query.topicId] - An optional array of topic IDs to retrieve by
  * @param {Framework[]} [query.framework] - An optional array of frameworks to retrieve by
  *
- * @returns {CodeSample[]} An array of code samples matching the query parameters
+ * @returns {Topic[]} An array of topics matching the query parameters
  *
  * @example
- * // Get all code samples for 'en' locale
+ * // Get all code topics with all platforms for the 'en' locale
  * const allSamples = queryCodeSamples(loader, { locale: 'en' });
  *
  * @example
- * // Get all Android And iOS samples for 'en' locale
+ * // Get all topics with code samples for Android and iOS, for the 'en' locale
  * const androidAndIosSamples = queryCodeSamples(
  *   loader,
  *   { locale: 'en', framework: ['android', 'ios'] },
  * );
  *
  * @example
- * // Get the Dark Mode sample for all frameworks in 'en' locale
+ * // Get the Dark Mode topic with all frameworks, in 'en' locale
  * const androidAndIosSamples = queryCodeSamples(
  *   loader,
- *   { locale: 'en', sampleId: ['screen-dark-mode'] },
+ *   { locale: 'en', topicId: ['screen-dark-mode'] },
  * );
  */
 export async function queryCodeSamples(
   loader: Loader,
   query: CodeSamplesQuery,
-): Promise<CodeSample[]> {
-  const results: CodeSample[] = [];
+): Promise<Topic[]> {
+  const results: Topic[] = [];
   const locale = query.locale;
 
-  const samplesForLocale = samples[query.locale];
+  const topicsForLocale = samples[query.locale];
 
-  for (const sampleId of Object.keys(samplesForLocale) as SampleId[]) {
-    if (query.sampleId && !query.sampleId.includes(sampleId)) {
+  for (const topicId of Object.keys(topicsForLocale) as TopicId[]) {
+    if (query.topicId && !query.topicId.includes(topicId)) {
       continue;
     }
 
     results.push({
       locale,
-      sampleId,
+      topicId,
       introduction: {
-        contributionUrl: getContributionUrlForIntroduction(locale, sampleId),
-        importPath: getImportPathForIntroduction(locale, sampleId),
-        content: loader.loadSampleIntroduction(locale, sampleId),
+        contributionUrl: getContributionUrlForIntroduction(locale, topicId),
+        importPath: getImportPathForIntroduction(locale, topicId),
+        content: loader.loadTopicIntroduction(locale, topicId),
       },
-      frameworks: [],
+      codeSamples: [],
     });
 
-    const sampleIndex = results.length - 1;
+    const topicIndex = results.length - 1;
 
-    const frameworksForSample = samplesForLocale[sampleId];
+    const frameworksForSample = topicsForLocale[topicId];
     for (const framework of frameworksForSample) {
       if (query.framework && !query.framework.includes(framework)) {
         continue;
       }
 
-      results[sampleIndex].frameworks.push({
+      results[topicIndex].codeSamples.push({
         framework: {
           id: framework,
           label: frameworkIdToLabelMap[framework],
         },
-        contributionUrl: getContributionUrlForFrameworkCodeSample(
+        contributionUrl: getContributionUrlForCodeSample(
           locale,
-          sampleId,
+          topicId,
           framework,
         ),
-        importPath: getImportPathForFrameworkCodeSample(
-          locale,
-          sampleId,
-          framework,
-        ),
-        content: loader.loadFrameworkSample(locale, sampleId, framework),
+        importPath: getImportPathForCodeSample(locale, topicId, framework),
+        content: loader.loadCodeSample(locale, topicId, framework),
       });
     }
   }

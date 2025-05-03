@@ -1,31 +1,28 @@
-import type { Locale, Framework, SampleId } from "../generated";
+import type { Locale, Framework, TopicId } from "../generated";
 
-export function getImportPathForIntroduction(
-  locale: Locale,
-  sampleId: SampleId,
-) {
-  return `@appt.org/samples/code-samples/${locale}.${sampleId}.README.md`;
+export function getImportPathForIntroduction(locale: Locale, topicId: TopicId) {
+  return `@appt.org/samples/code-samples/${locale}.${topicId}.README.md`;
 }
 
-export function getImportPathForFrameworkCodeSample(
+export function getImportPathForCodeSample(
   locale: Locale,
-  sampleId: SampleId,
+  topicId: TopicId,
   framework: Framework,
 ) {
-  return `@appt.org/samples/code-samples/${locale}.${sampleId}.${framework}.md`;
+  return `@appt.org/samples/code-samples/${locale}.${topicId}.${framework}.md`;
 }
 
 export function getContributionUrlForIntroduction(
   locale: Locale,
-  sampleId: SampleId,
+  topicId: TopicId,
 ) {
-  return `https://github.com/appt-org/appt-website/tree/develop/src/data/code-samples/${locale}/${sampleId}/README.md`;
+  return `https://github.com/appt-org/appt-website/tree/develop/src/data/code-samples/${locale}/${topicId}/README.md`;
 }
 
-export function getContributionUrlForFrameworkCodeSample(
+export function getContributionUrlForCodeSample(
   locale: Locale,
-  sampleId: SampleId,
+  topicId: TopicId,
   framework: Framework,
 ) {
-  return `https://github.com/appt-org/appt-website/tree/develop/src/data/code-samples/${locale}/${sampleId}/${framework}.md`;
+  return `https://github.com/appt-org/appt-website/tree/develop/src/data/code-samples/${locale}/${topicId}/${framework}.md`;
 }

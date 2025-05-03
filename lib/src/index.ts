@@ -1,6 +1,6 @@
 export { queryCodeSamples } from "./retrieval/query-code-samples";
-export { getCodeSample } from "./retrieval/get-code-sample";
+export { getTopic } from "./retrieval/get-topic";
 export { createWebpackLoader } from "./loaders/webpack-loader";
 
-export type { Locale, SampleId, Framework } from "./generated";
-export type { Loader, CodeSample, FrameworkCodeSample } from "./types";
+export type { Locale, TopicId, Framework } from "./generated";
+export type { Loader, Topic, CodeSample } from "./types";
