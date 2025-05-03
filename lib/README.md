@@ -4,12 +4,11 @@ The Appt® platform is an initiative of the Appt Foundation, a non-profit organi
 accessible for everyone. We try to achieve this by sharing free knowledge and open-source code. Appt.org is a website
 that empowers developers and organizations to build accessible apps for everyone.
 
-This repository contains all code samples and provides components to embed them on your website.
-
 This package contains two things:
 
-1. Code samples in Markdown files
-2. A function to query these Markdown files, based on locale, sample-id and/or platform.
+1. Code samples (in Markdown format)
+2. Loaders - A way to let the library know how to import these files in your environment.
+3. A retrieval function to query the code samples, based on locale, sample-id and/or platform.
 
 The package is responsible solely for data and does not handle any user interface (UI) elements. UI
 implementation is left to the implementing party. The implementing party should also configure their environment
@@ -26,95 +25,106 @@ npm i @appt.org/samples
 
 ### Bundler configuration
 
-As explained in the introduction of this readme, you must configure your environment (bundler) to allow direct importing
-of Markdown (.md) files. Below are setup instructions for popular JavaScript environments:
+As explained in the introduction of this readme, you must configure your environment (bundler) to allow importing
+of Markdown (.md) files.
 
-#### Vite
+#### Understanding Loaders
 
-For Vite, you can use vite-plugin-markdown to import Markdown files as raw Markdown, as Vue/React components or as
-structured data (e.g., frontmatter + HTML).
+Loaders are a key concept in this library. They provide a way to dynamically import Markdown files based on locale,
+sample ID, and framework.
 
-Install the plugin:
+The library defines a `Loader` interface that any loader must implement:
 
-```bash
-npm install vite-plugin-markdown --save-dev
-```
-
-Add to your vite.config.js:
-
-```js
-import { defineConfig } from 'vite'
-import { plugin as markdownPlugin, Mode } from "vite-plugin-markdown";
-
-export default defineConfig({
-  plugins: [
-    markdownPlugin({ mode: [Mode.HTML, Mode.MARKDOWN, Mode.TOC, Mode.REACT, Mode.VUE] }) // Choose modes as needed
-  ],
-})
-```
-
-Now you can import Markdown files and access their content and metadata:
-
-```js
-import doc from './README.md'
-
-// doc.markdown - the raw markdown
-// doc.html     - the rendered HTML
-// doc[...]
-```
-
-#### Next.js
-
-For Next.js, you typically use @next/mdx to import Markdown as React components or structured data.
-
-```shell
-npm install @next/mdx @mdx-js/loader
-```
-
-Update your `next.config.js`:
-
-```js
-import createMDX from '@next/mdx'
-
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  // Configure `pageExtensions` to include markdown and MDX files
-  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
-}
-
-const withMDX = createMDX({
-  // Add markdown plugins here, as desired
-})
-
-// Merge MDX config with Next.js config
-export default withMDX(nextConfig)
-```
-
-Now you can import Markdown/MDX files as React components:
-
-```tsx
-import MyDoc from './README.md'
-
-export default function Page() {
-  return <MyDoc />
+```typescript
+export interface Loader {
+  loadFrameworkSample: (
+    locale: Locale,
+    sampleId: SampleId,
+    framework: Framework,
+  ) => Promise<any>;
+  loadSampleIntroduction: (locale: Locale, sampleId: SampleId) => Promise<any>;
 }
 ```
 
-#### Docusaurus
+#### Webpack Configuration
 
-Docusaurus natively supports importing Markdown files as React components and extracting frontmatter.
+The library includes a built-in loader for webpack. To use it, you first need to configure Webpack to handle Markdown
+files. The rule can be defined in any way that works best for you. If you already handle markdown files, or are using
+Docusaurus or a different framework that handles Markdown files by default, you can skip this step.
 
-Import as a component:
-
-```tsx
-import Doc from '@site/docs/README.md'
-
-export default function Page() {
-  return <Doc />
-}
+```javascript
+// webpack.config.js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.md$/,
+        type: 'asset/source'
+      }
+    ]
+  }
+};
 ```
 
-To access frontmatter or metadata, use the useDoc or useMDXComponent hooks if needed.
+Then, set up a Webpack context
+
+```javascript
+// In your application code
+import { createWebpackLoader } from '@appt.org/samples';
+
+// Create a webpack context that includes all markdown files
+const webpackContext = require.context(
+  '@appt.org/samples/code-samples',
+  true, // Include subdirectories
+  /\.md$/, // Only include markdown files
+  'lazy' // Only load a sample when it is requested in retrieval
+);
+
+// Create a loader using the webpack context
+const loader = createWebpackLoader(webpackContext);
+
+// Now you can use the loader with the getCodeSample function
+import { getCodeSample } from '@appt.org/samples';
+
+const codeSample = await getCodeSample(loader, {
+  locale: 'en',
+  sampleId: 'screen-dark-mode'
+});
+```
+
+#### Creating Custom Loaders
+
+You can create your own loader for your specific needs or environment. For example, if you're using a different bundler
+or have a custom way of loading Markdown files, you can implement the `Loader` interface:
+
+```typescript
+import { Loader } from '@appt.org/samples';
+
+// Create a custom loader
+const customLoader: Loader = {
+  loadFrameworkSample: async (locale, sampleId, framework) => {
+    // Your custom implementation to load framework samples
+    // This could use fetch, dynamic imports, or any other method
+    const content = await yourCustomLoadingMethod(locale, sampleId, framework);
+    return content;
+  },
+  loadSampleIntroduction: async (locale, sampleId) => {
+    // Your custom implementation to load sample introductions
+    const content = await yourCustomLoadingMethod(locale, sampleId, 'README');
+    return content;
+  }
+};
+
+// Use your custom loader with getCodeSample
+import { getCodeSample } from '@appt.org/samples';
+
+const codeSample = await getCodeSample(customLoader, {
+  locale: 'en',
+  sampleId: 'example-sample'
+});
+```
+
+This flexibility allows you to integrate the library with any environment or build system.
 
 ## License
 

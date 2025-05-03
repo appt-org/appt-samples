@@ -8,8 +8,9 @@ This repository contains all code samples and provides components to embed them 
 
 This package contains two things:
 
-1. Code samples in Markdown files
-2. A function to query these Markdown files, based on locale, sample-id and/or platform.
+1. Code samples (in Markdown format)
+2. Loaders - A way to let the library know how to import these files in your environment.
+3. A retrieval function to query the code samples, based on locale, sample-id and/or platform.
 
 ## Lib usage
 
