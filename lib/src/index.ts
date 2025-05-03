@@ -3,3 +3,4 @@ export { getCodeSample } from "./retrieval/get-code-sample";
 export { createWebpackLoader } from "./loaders/webpack-loader";
 
 export type { Locale, SampleId, Framework } from "./generated";
+export type { Loader, CodeSample, FrameworkCodeSample } from "./types";

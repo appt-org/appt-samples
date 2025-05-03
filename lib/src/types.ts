@@ -23,7 +23,7 @@ export interface Loader {
   loadSampleIntroduction: (locale: Locale, sampleId: SampleId) => Promise<any>;
 }
 
-export interface ImportableMarkdown {
+interface ImportableMarkdown {
   importPath: string;
   contributionUrl: string;
   content: any;
