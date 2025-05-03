@@ -1,4 +1,4 @@
-import { Platform } from "./generated";
+import type { Platform } from "./generated";
 
 export const platformIdToLabelMap: Record<Platform, string> = {
   android: "Android",

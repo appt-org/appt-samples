@@ -1,4 +1,4 @@
-import type { CodeSampleMetadata, Loader } from "../types";
+import type { Loader } from "../types";
 
 /**
  * A partial of the __WebpackModuleApi.RequireContext, taken from the webpack-env repo, but slightly modified to align with lazy loading
@@ -18,11 +18,19 @@ export function createWebpackLoader(webpackContext: WebpackContext): Loader {
       return map;
     }, {});
 
-  return async function loader(locale, sampleId, platform) {
-    const lookupKey = constructLookupKey(locale, sampleId, platform);
-    const relativePath = pathMap[lookupKey];
+  return {
+    loadSampleIntroduction: async (locale, sampleId) => {
+      const lookupKey = constructLookupKey(locale, sampleId, "README");
+      const relativePath = pathMap[lookupKey];
 
-    return await webpackContext(relativePath);
+      return await webpackContext(relativePath);
+    },
+    loadPlatformSample: async (locale, sampleId, platform) => {
+      const lookupKey = constructLookupKey(locale, sampleId, platform);
+      const relativePath = pathMap[lookupKey];
+
+      return await webpackContext(relativePath);
+    },
   };
 }
 

@@ -1,24 +1,30 @@
 import type { Locale, Platform, SampleId } from "./generated";
 
-export interface CodeSampleMetadata {
+export interface CodeSample {
   locale: Locale;
   sampleId: SampleId;
+  introduction: ImportableMarkdown;
+  platforms: PlatformCodeSample[];
+}
+
+export interface PlatformCodeSample extends ImportableMarkdown {
   platform: {
     id: Platform;
     label: string;
   };
-  contributionUrl: string;
-  contentPath: string;
 }
 
-export interface CodeSample extends CodeSampleMetadata {
-  // TODO: add jsdoc comment about the type
+export interface Loader {
+  loadPlatformSample: (
+    locale: Locale,
+    sampleId: SampleId,
+    platform: Platform,
+  ) => Promise<any>;
+  loadSampleIntroduction: (locale: Locale, sampleId: SampleId) => Promise<any>;
+}
+
+export interface ImportableMarkdown {
+  importPath: string;
+  contributionUrl: string;
   content: any;
 }
-
-// TODO: add jsdoc comment about the type
-export type Loader = (
-  locale: Locale,
-  sampleId: SampleId,
-  platform: Platform,
-) => Promise<any>;
