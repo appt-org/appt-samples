@@ -33,7 +33,7 @@ for (const locale of locales) {
   for (const sampleId of sampleIds) {
     const samplePath = path.join(localePath, sampleId);
 
-    const { readme, platformFiles } = fs
+    const { introduction, frameworkFiles } = fs
       .readdirSync(samplePath)
       .filter((item) => {
         const fullPath = path.join(samplePath, item);
@@ -42,28 +42,28 @@ for (const locale of locales) {
         return fs.statSync(fullPath).isFile() && isMarkdownFile;
       })
       .map((item) => path.join("data", locale, sampleId, item))
-      .reduce<{ readme: string | null; platformFiles: string[] }>(
+      .reduce<{ introduction: string | null; frameworkFiles: string[] }>(
         (acc, item) => {
           const isReadme = path.basename(item).toLowerCase() === "readme.md";
           if (isReadme) {
-            return { ...acc, readme: item };
+            return { ...acc, introduction: item };
           }
 
-          return { ...acc, platformFiles: [...acc.platformFiles, item] };
+          return { ...acc, frameworkFiles: [...acc.frameworkFiles, item] };
         },
-        { readme: null, platformFiles: [] },
+        { introduction: null, frameworkFiles: [] },
       );
 
-    if (!readme) {
+    if (!introduction) {
       console.warn(
         `[Warn]: skipping ${sampleId} because it does not contain a README.md file`,
       );
     }
 
     sampleEntries[locale][sampleId] = [];
-    for (const platformFile of platformFiles) {
-      const platform = path.parse(platformFile).name;
-      sampleEntries[locale][sampleId].push(platform);
+    for (const frameworkFile of frameworkFiles) {
+      const framework = path.parse(frameworkFile).name;
+      sampleEntries[locale][sampleId].push(framework);
     }
   }
 }
@@ -72,7 +72,7 @@ const sampleIds = dedupeArray(
   Object.values(sampleEntries).flatMap(Object.keys),
 );
 
-const platforms = dedupeArray(
+const frameworks = dedupeArray(
   Object.values(sampleEntries).map(Object.values).flat(2),
 );
 
@@ -81,9 +81,9 @@ const fileContent = `// This file is generated automatically. Do not edit manual
 
 ${unionType(true, "Locale", locales)}
 ${unionType(true, "SampleId", sampleIds)}
-${unionType(true, "Platform", platforms)}
+${unionType(true, "Framework", frameworks)}
 
-export const samples = ${JSON.stringify(sampleEntries, null, 2)} as const satisfies Record<Locale, Record<SampleId, Platform[]>>;
+export const samples = ${JSON.stringify(sampleEntries, null, 2)} as const satisfies Record<Locale, Record<SampleId, Framework[]>>;
 `;
 
 fs.writeFileSync("../lib/src/generated.ts", fileContent);

@@ -1,6 +1,6 @@
-import type { Platform } from "./generated";
+import type { Framework } from "./generated";
 
-export const platformIdToLabelMap: Record<Platform, string> = {
+export const frameworkIdToLabelMap: Record<Framework, string> = {
   android: "Android",
   "jetpack-compose": "Jetpack Compose",
   ios: "iOS",

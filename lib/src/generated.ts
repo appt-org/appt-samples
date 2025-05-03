@@ -3,7 +3,7 @@
 
 export type Locale = "en"
 export type SampleId = "accessibility-action" | "accessibility-announcement" | "accessibility-dialog" | "accessibility-focus" | "accessibility-focus-indicator" | "accessibility-focusable" | "accessibility-group" | "accessibility-hint" | "accessibility-label" | "accessibility-language" | "accessibility-link" | "accessibility-live-region" | "accessibility-modal" | "accessibility-name" | "accessibility-order" | "accessibility-role" | "accessibility-state" | "accessibility-value" | "element-focus" | "element-identification" | "element-obscured" | "element-position" | "input-authentication" | "input-cancellation" | "input-content-type" | "input-dragging" | "input-errors" | "input-gestures" | "input-instructions" | "input-keyboard-type" | "input-label" | "input-motion" | "input-predictable" | "input-redundant" | "keyboard-order" | "keyboard-shortcuts" | "linting" | "media-audio-control" | "media-audio-description" | "media-captions" | "media-captions-live" | "media-transcript" | "screen-animations" | "screen-contrast" | "screen-dark-mode" | "screen-flashes" | "screen-headers" | "screen-help" | "screen-labels" | "screen-orientation" | "screen-reflow" | "screen-search" | "screen-skip" | "screen-timing" | "screen-title" | "target-size" | "text-bold" | "text-element" | "text-localization" | "text-scale" | "text-spacing" | "text-truncation"
-export type Platform = "android" | "flutter" | "ios" | "jetpack-compose" | "net-maui" | "react-native" | "swiftui" | "xamarin"
+export type Framework = "android" | "flutter" | "ios" | "jetpack-compose" | "net-maui" | "react-native" | "swiftui" | "xamarin"
 
 export const samples = {
   "en": {
@@ -628,4 +628,4 @@ export const samples = {
       "xamarin"
     ]
   }
-} as const satisfies Record<Locale, Record<SampleId, Platform[]>>;
+} as const satisfies Record<Locale, Record<SampleId, Framework[]>>;

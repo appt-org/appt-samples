@@ -1,35 +1,35 @@
 import {
   samples,
   type Locale,
-  type Platform,
+  type Framework,
   type SampleId,
 } from "../generated";
 import type { CodeSample, Loader } from "../types";
 import {
   getContributionUrlForIntroduction,
-  getContributionUrlForPlatformCodeSample,
+  getContributionUrlForFrameworkCodeSample,
   getImportPathForIntroduction,
-  getImportPathForPlatformCodeSample,
+  getImportPathForFrameworkCodeSample,
 } from "./utils";
-import { platformIdToLabelMap } from "../platforms";
+import { frameworkIdToLabelMap } from "../frameworks";
 
 interface CodeSamplesQuery {
   locale: Locale;
-  platform?: Array<Platform>;
   sampleId?: Array<SampleId>;
+  framework?: Array<Framework>;
 }
 
 /**
  * Retrieves code samples based on specified query parameters and options.
  *
- * This function filters code samples by locale, sample ID, and/or platform.
- * If the sample-id or platform-id parameters are left empty, everything is retrieved.
+ * This function filters code samples by locale, sample ID, and/or framework.
+ * If the sample-id or framework parameters are left empty, everything is retrieved.
  *
  * @param {Loader} loader - The loader to use
  * @param {CodeSamplesQuery} query - The query parameters for filtering code samples
  * @param {Locale} query.locale - The locale to get code samples from
  * @param {SampleId[]} [query.sampleId] - An optional array of sample IDs to retrieve by
- * @param {Platform[]} [query.platform] - An optional array of platforms to retrieve by
+ * @param {Framework[]} [query.framework] - An optional array of frameworks to retrieve by
  *
  * @returns {CodeSample[]} An array of code samples matching the query parameters
  *
@@ -41,11 +41,11 @@ interface CodeSamplesQuery {
  * // Get all Android And iOS samples for 'en' locale
  * const androidAndIosSamples = queryCodeSamples(
  *   loader,
- *   { locale: 'en', platform: ['android', 'ios'] },
+ *   { locale: 'en', framework: ['android', 'ios'] },
  * );
  *
  * @example
- * // Get the Dark Mode sample for all platforms in 'en' locale
+ * // Get the Dark Mode sample for all frameworks in 'en' locale
  * const androidAndIosSamples = queryCodeSamples(
  *   loader,
  *   { locale: 'en', sampleId: ['screen-dark-mode'] },
@@ -73,33 +73,33 @@ export async function queryCodeSamples(
         importPath: getImportPathForIntroduction(locale, sampleId),
         content: loader.loadSampleIntroduction(locale, sampleId),
       },
-      platforms: [],
+      frameworks: [],
     });
 
     const sampleIndex = results.length - 1;
 
-    const platformsForSample = samplesForLocale[sampleId];
-    for (const platform of platformsForSample) {
-      if (query.platform && !query.platform.includes(platform)) {
+    const frameworksForSample = samplesForLocale[sampleId];
+    for (const framework of frameworksForSample) {
+      if (query.framework && !query.framework.includes(framework)) {
         continue;
       }
 
-      results[sampleIndex].platforms.push({
-        platform: {
-          id: platform,
-          label: platformIdToLabelMap[platform],
+      results[sampleIndex].frameworks.push({
+        framework: {
+          id: framework,
+          label: frameworkIdToLabelMap[framework],
         },
-        contributionUrl: getContributionUrlForPlatformCodeSample(
+        contributionUrl: getContributionUrlForFrameworkCodeSample(
           locale,
           sampleId,
-          platform,
+          framework,
         ),
-        importPath: getImportPathForPlatformCodeSample(
+        importPath: getImportPathForFrameworkCodeSample(
           locale,
           sampleId,
-          platform,
+          framework,
         ),
-        content: loader.loadPlatformSample(locale, sampleId, platform),
+        content: loader.loadFrameworkSample(locale, sampleId, framework),
       });
     }
   }

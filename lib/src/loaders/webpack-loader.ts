@@ -25,8 +25,8 @@ export function createWebpackLoader(webpackContext: WebpackContext): Loader {
 
       return await webpackContext(relativePath);
     },
-    loadPlatformSample: async (locale, sampleId, platform) => {
-      const lookupKey = constructLookupKey(locale, sampleId, platform);
+    loadFrameworkSample: async (locale, sampleId, framework) => {
+      const lookupKey = constructLookupKey(locale, sampleId, framework);
       const relativePath = pathMap[lookupKey];
 
       return await webpackContext(relativePath);
@@ -35,14 +35,14 @@ export function createWebpackLoader(webpackContext: WebpackContext): Loader {
 }
 
 /**
- * Constructs a lookup-key with the format `[locale].[sampleId].[platform]`.
+ * Constructs a lookup-key with the format `[locale].[sampleId].[framework]`.
  */
 function constructLookupKey(
   locale: string,
   sampleId: string,
-  platform: string,
+  framework: string,
 ) {
-  return `${locale}.${sampleId}.${platform}`;
+  return `${locale}.${sampleId}.${framework}`;
 }
 
 /**
@@ -56,7 +56,7 @@ function constructLookupKeyForRelativePath(relativePath: string) {
     );
   }
 
-  // Get from the filename: [locale, sampleId, platform]
+  // Get from the filename: [locale, sampleId, framework]
   const sampleMeta = filename.split(".").slice(0, 3);
   if (sampleMeta.length !== 3) {
     throw new Error(

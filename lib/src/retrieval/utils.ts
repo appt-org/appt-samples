@@ -1,4 +1,4 @@
-import type { Locale, Platform, SampleId } from "../generated";
+import type { Locale, Framework, SampleId } from "../generated";
 
 export function getImportPathForIntroduction(
   locale: Locale,
@@ -7,12 +7,12 @@ export function getImportPathForIntroduction(
   return `@appt.org/samples/code-samples/${locale}.${sampleId}.README.md`;
 }
 
-export function getImportPathForPlatformCodeSample(
+export function getImportPathForFrameworkCodeSample(
   locale: Locale,
   sampleId: SampleId,
-  platform: Platform,
+  framework: Framework,
 ) {
-  return `@appt.org/samples/code-samples/${locale}.${sampleId}.${platform}.md`;
+  return `@appt.org/samples/code-samples/${locale}.${sampleId}.${framework}.md`;
 }
 
 export function getContributionUrlForIntroduction(
@@ -22,10 +22,10 @@ export function getContributionUrlForIntroduction(
   return `https://github.com/appt-org/appt-website/tree/develop/src/data/code-samples/${locale}/${sampleId}/README.md`;
 }
 
-export function getContributionUrlForPlatformCodeSample(
+export function getContributionUrlForFrameworkCodeSample(
   locale: Locale,
   sampleId: SampleId,
-  platform: Platform,
+  framework: Framework,
 ) {
-  return `https://github.com/appt-org/appt-website/tree/develop/src/data/code-samples/${locale}/${sampleId}/${platform}.md`;
+  return `https://github.com/appt-org/appt-website/tree/develop/src/data/code-samples/${locale}/${sampleId}/${framework}.md`;
 }

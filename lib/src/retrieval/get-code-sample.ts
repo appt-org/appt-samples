@@ -1,33 +1,33 @@
-import { samples, type Locale, type SampleId, Platform } from "../generated";
-import type { CodeSample, Loader, PlatformCodeSample } from "../types";
-import { platformIdToLabelMap } from "../platforms";
+import { samples, type Locale, type SampleId, Framework } from "../generated";
+import type { CodeSample, Loader, FrameworkCodeSample } from "../types";
+import { frameworkIdToLabelMap } from "../frameworks";
 import {
   getContributionUrlForIntroduction,
-  getContributionUrlForPlatformCodeSample,
+  getContributionUrlForFrameworkCodeSample,
   getImportPathForIntroduction,
-  getImportPathForPlatformCodeSample,
+  getImportPathForFrameworkCodeSample,
 } from "./utils";
 
 interface GetCodeSampleQuery {
   locale: Locale;
   sampleId: SampleId;
-  platforms?: Platform[];
+  frameworks?: Framework[];
 }
 
 export async function getCodeSample(
   loader: Loader,
   query: GetCodeSampleQuery,
 ): Promise<CodeSample | null> {
-  const availablePlatforms = samples[query.locale]?.[query.sampleId];
-  if (!Array.isArray(availablePlatforms)) {
+  const availableFrameworks = samples[query.locale]?.[query.sampleId];
+  if (!Array.isArray(availableFrameworks)) {
     return null;
   }
 
-  const platforms = query.platforms
-    ? availablePlatforms.filter((platform) =>
-        query.platforms?.includes(platform),
+  const frameworks = query.frameworks
+    ? availableFrameworks.filter((framework) =>
+        query.frameworks?.includes(framework),
       )
-    : availablePlatforms;
+    : availableFrameworks;
 
   return {
     locale: query.locale,
@@ -43,26 +43,26 @@ export async function getCodeSample(
         query.sampleId,
       ),
     },
-    platforms: await Promise.all(
-      platforms.map<Promise<PlatformCodeSample>>(async (platform) => ({
-        platform: {
-          id: platform,
-          label: platformIdToLabelMap[platform],
+    frameworks: await Promise.all(
+      frameworks.map<Promise<FrameworkCodeSample>>(async (framework) => ({
+        framework: {
+          id: framework,
+          label: frameworkIdToLabelMap[framework],
         },
-        importPath: getImportPathForPlatformCodeSample(
+        importPath: getImportPathForFrameworkCodeSample(
           query.locale,
           query.sampleId,
-          platform,
+          framework,
         ),
-        contributionUrl: getContributionUrlForPlatformCodeSample(
+        contributionUrl: getContributionUrlForFrameworkCodeSample(
           query.locale,
           query.sampleId,
-          platform,
+          framework,
         ),
-        content: await loader.loadPlatformSample(
+        content: await loader.loadFrameworkSample(
           query.locale,
           query.sampleId,
-          platform,
+          framework,
         ),
       })),
     ),
