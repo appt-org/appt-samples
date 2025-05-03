@@ -36,13 +36,13 @@ sample ID, and framework.
 The library defines a `Loader` interface that any loader must implement:
 
 ```typescript
-export interface Loader {
-  loadFrameworkSample: (
+interface Loader {
+  loadCodeSample: (
     locale: Locale,
-    sampleId: SampleId,
+    topicId: TopicId,
     framework: Framework,
   ) => Promise<any>;
-  loadSampleIntroduction: (locale: Locale, sampleId: SampleId) => Promise<any>;
+  loadTopicIntroduction: (locale: Locale, topicId: TopicId) => Promise<any>;
 }
 ```
 
@@ -84,14 +84,14 @@ const webpackContext = require.context(
 const loader = createWebpackLoader(webpackContext);
 
 // Now you can use the loader with the getCodeSample function
-import { getCodeSample } from '@appt.org/samples';
+import { getTopic } from '@appt.org/samples';
 
-const codeSample = await getCodeSample(loader, {
+const topic = await getTopic(loader, {
   locale: 'en',
-  sampleId: 'screen-dark-mode'
+  topicId: 'screen-dark-mode'
 });
 
-// The imported markdown file is available under codeSample.frameworks[framework].content.
+// The imported markdown file is available under topic.codeSamples[number].content.
 // The value of `content` depends on your own Webpack configuration.
 ```
 
@@ -105,25 +105,25 @@ import { Loader } from '@appt.org/samples';
 
 // Create a custom loader
 const customLoader: Loader = {
-  loadFrameworkSample: async (locale, sampleId, framework) => {
+  loadCodeSample: async (locale, topicId, framework) => {
     // Your custom implementation to load framework samples
     // This could use fetch, dynamic imports, or any other method
-    const content = await yourCustomLoadingMethod(locale, sampleId, framework);
+    const content = await yourCustomLoadingMethod(locale, topicId, framework);
     return content;
   },
-  loadSampleIntroduction: async (locale, sampleId) => {
+  loadTopicIntroduction: async (locale, topicId) => {
     // Your custom implementation to load sample introductions
-    const content = await yourCustomLoadingMethod(locale, sampleId, 'README');
+    const content = await yourCustomLoadingMethod(locale, topicId, 'README');
     return content;
   }
 };
 
 // Use your custom loader with getCodeSample
-import { getCodeSample } from '@appt.org/samples';
+import { getTopic } from '@appt.org/samples';
 
-const codeSample = await getCodeSample(customLoader, {
+const codeSample = await getTopic(customLoader, {
   locale: 'en',
-  sampleId: 'example-sample'
+  topicId: 'screen-dark-mode'
 });
 ```
 
