@@ -46,7 +46,7 @@ interface Loader {
 }
 ```
 
-#### Webpack Configuration
+#### Webpack
 
 The library includes a built-in loader for webpack. To use it, you first need to configure Webpack to handle Markdown
 files. The rule can be defined in any way that works best for you. If you already handle markdown files, or are using
@@ -128,6 +128,91 @@ const codeSample = await getTopic(customLoader, {
 ```
 
 This flexibility allows you to integrate the library with any environment or build system.
+
+## Retrieval
+
+The library provides two main functions for retrieving code samples: `queryCodeSamples` and `getTopic`. These functions allow you to fetch code samples based on various criteria such as locale, topic ID, and framework.
+
+### queryCodeSamples
+
+The `queryCodeSamples` function retrieves multiple topics and their code samples based on specified query parameters.
+
+```typescript
+async function queryCodeSamples(
+  loader: Loader,
+  query: {
+    locale: Locale;
+    topicId?: Array<TopicId>;
+    framework?: Array<Framework>;
+  }
+): Promise<Topic[]>
+```
+
+This function filters topics and code samples by:
+- `locale` (required): The language locale to get code samples from
+- `topicId` (optional): An array of topic IDs to filter by
+- `framework` (optional): An array of frameworks to filter by
+
+If `topicId` or `framework` parameters are omitted, all available topics or frameworks will be included.
+
+**Examples:**
+
+```javascript
+// Get all code topics with all platforms for the 'en' locale
+const allSamples = await queryCodeSamples(loader, { locale: 'en' });
+
+// Get all topics with code samples for Android and iOS, for the 'en' locale
+const androidAndIosSamples = await queryCodeSamples(
+  loader,
+  { locale: 'en', framework: ['android', 'ios'] }
+);
+
+// Get the Dark Mode topic with all frameworks, in 'en' locale
+const darkModeSamples = await queryCodeSamples(
+  loader,
+  { locale: 'en', topicId: ['screen-dark-mode'] }
+);
+```
+
+### getTopic
+
+The `getTopic` function retrieves a single topic and its code samples based on specified query parameters.
+
+```typescript
+async function getTopic(
+  loader: Loader,
+  query: {
+    locale: Locale;
+    topicId: TopicId;
+    frameworks?: Framework[];
+  }
+): Promise<Topic | null>
+```
+
+This function fetches a topic by:
+- `locale` (required): The language locale to get the topic from
+- `topicId` (required): The ID of the topic to retrieve
+- `frameworks` (optional): An array of frameworks to filter code samples by
+
+If the requested topic or locale does not exist, `null` is returned. If the `frameworks` parameter is omitted, code samples for all available frameworks are included.
+
+**Examples:**
+
+```javascript
+// Get the 'screen-dark-mode' topic with all available frameworks in 'en' locale
+const topic = await getTopic(loader, { locale: 'en', topicId: 'screen-dark-mode' });
+
+// Get the 'screen-dark-mode' topic, but only for the 'android' and 'ios' frameworks
+const topic = await getTopic(loader, {
+  locale: 'en',
+  topicId: 'screen-dark-mode',
+  frameworks: ['android', 'ios'],
+});
+```
+
+The returned `Topic` object contains the topic's introduction and code samples for the specified frameworks, along with metadata like import paths and contribution URLs.
+
+
 
 ## License
 
