@@ -28,7 +28,7 @@ interface CodeSamplesQuery {
  * @param {Loader} loader - The loader to use
  * @param {CodeSamplesQuery} query - The query parameters for filtering code samples
  * @param {Locale} query.locale - The locale to get code samples from
- * @param {SampleId[]} [query.topicId] - An optional array of topic IDs to retrieve by
+ * @param {TopicId[]} [query.topicId] - An optional array of topic IDs to retrieve by
  * @param {Framework[]} [query.framework] - An optional array of frameworks to retrieve by
  *
  * @returns {Topic[]} An array of topics matching the query parameters
