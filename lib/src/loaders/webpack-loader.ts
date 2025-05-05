@@ -3,11 +3,38 @@ import type { Loader } from "../types";
 /**
  * A partial of the __WebpackModuleApi.RequireContext, taken from the webpack-env repo, but slightly modified to align with lazy loading
  */
-export interface WebpackContext {
+interface WebpackContext {
   (id: string): Promise<any>;
   keys(): string[];
 }
 
+/**
+ * Creates a Loader instance that loads topic introductions and code samples using a Webpack context.
+ *
+ * This function adapts a (possibly lazy) Webpack context (such as one created by `require.context`)
+ * to the Loader interface expected by topic and code sample query functions.
+ *
+ * @param {WebpackContext} webpackContext - The Webpack context to use for loading files.
+ *   Typically created with `require.context` and configured for lazy loading.
+ *
+ * @returns {Loader} A Loader implementation that loads topic introductions and code samples
+ *   via the provided Webpack context.
+ *
+ * @example
+ * // Create a Webpack context for all markdown files under the code-samples directory (lazy loaded)
+ * const codeSamplesContext = require.context('@appt.org/samples/code-samples', true, /\.md$/, 'lazy');
+ *
+ * // Create a Loader using the Webpack context
+ * const webpackLoader = createWebpackLoader(codeSamplesContext);
+ *
+ * // Use the loader to retrieve topic(s) and its code samples
+ * const topic = await getTopic(webpackLoader, {
+ *   locale: 'en',
+ *   topicId: 'screen-dark-mode',
+ * });
+ *
+ * @see {@link https://webpack.js.org/guides/dependency-management/#requirecontext}
+ */
 export function createWebpackLoader(webpackContext: WebpackContext): Loader {
   // Create the map from lookup keys to the relative paths needed by the context module.
   const pathMap = webpackContext
