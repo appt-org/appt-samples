@@ -15,8 +15,8 @@ import { frameworkIdToLabelMap } from "../frameworks";
 
 interface CodeSamplesQuery {
   locale: Locale;
-  topicId?: Array<TopicId>;
-  framework?: Array<Framework>;
+  topicIds?: Array<TopicId>;
+  frameworks?: Array<Framework>;
 }
 
 /**
@@ -28,8 +28,8 @@ interface CodeSamplesQuery {
  * @param {Loader} loader - The loader to use
  * @param {CodeSamplesQuery} query - The query parameters for filtering code samples
  * @param {Locale} query.locale - The locale to get code samples from
- * @param {TopicId[]} [query.topicId] - An optional array of topic IDs to retrieve by
- * @param {Framework[]} [query.framework] - An optional array of frameworks to retrieve by
+ * @param {TopicId[]} [query.topicIds] - An optional array of topic IDs to retrieve by
+ * @param {Framework[]} [query.frameworks] - An optional array of frameworks to retrieve by
  *
  * @returns {Topic[]} An array of topics matching the query parameters
  *
@@ -61,7 +61,7 @@ export async function queryCodeSamples(
   const topicsForLocale = samples[query.locale];
 
   for (const topicId of Object.keys(topicsForLocale) as TopicId[]) {
-    if (query.topicId && !query.topicId.includes(topicId)) {
+    if (query.topicIds && !query.topicIds.includes(topicId)) {
       continue;
     }
 
@@ -80,7 +80,7 @@ export async function queryCodeSamples(
 
     const frameworksForSample = topicsForLocale[topicId];
     for (const framework of frameworksForSample) {
-      if (query.framework && !query.framework.includes(framework)) {
+      if (query.frameworks && !query.frameworks.includes(framework)) {
         continue;
       }
 

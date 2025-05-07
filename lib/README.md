@@ -164,13 +164,13 @@ const allSamples = await queryCodeSamples(loader, { locale: 'en' });
 // Get all topics with code samples for Android and iOS, for the 'en' locale
 const androidAndIosSamples = await queryCodeSamples(
   loader,
-  { locale: 'en', framework: ['android', 'ios'] }
+  { locale: 'en', frameworks: ['android', 'ios'] }
 );
 
 // Get the Dark Mode topic with all frameworks, in 'en' locale
 const darkModeSamples = await queryCodeSamples(
   loader,
-  { locale: 'en', topicId: ['screen-dark-mode'] }
+  { locale: 'en', topicIds: ['screen-dark-mode'] }
 );
 ```
 
