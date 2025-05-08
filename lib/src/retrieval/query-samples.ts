@@ -46,7 +46,7 @@ interface SamplesQuery {
  *
  * @example
  * // Get the Accessibility Role topic with all frameworks, in 'en' locale
- * const androidAndIosSamples = querySamples(
+ * const accessibilityRoleSamples = querySamples(
  *   loader,
  *   { locale: 'en', techniques: ['accessibility-role'] },
  * );
