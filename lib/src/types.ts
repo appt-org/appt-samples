@@ -42,7 +42,14 @@ export interface Loader {
 }
 
 interface ImportableMarkdown {
-  importPath: string;
-  contributionUrl: string;
+  /**
+   * Local import path for the .md file.
+   * @example @appt/samples/samples/en.accessibility-role.android.md
+   */
+  path: string;
+  /**
+   * The GitHub URL for .md file.
+   */
+  url: string;
   content: any;
 }

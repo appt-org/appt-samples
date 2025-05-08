@@ -1,10 +1,10 @@
 import type { Locale, Framework, TopicId } from "../generated";
 
-export function getImportPathForIntroduction(locale: Locale, topicId: TopicId) {
+export function getPathForIntroduction(locale: Locale, topicId: TopicId) {
   return `@appt.org/samples/samples/${locale}.${topicId}.README.md`;
 }
 
-export function getImportPathForSample(
+export function getPathForSample(
   locale: Locale,
   topicId: TopicId,
   framework: Framework,
@@ -12,14 +12,11 @@ export function getImportPathForSample(
   return `@appt.org/samples/samples/${locale}.${topicId}.${framework}.md`;
 }
 
-export function getContributionUrlForIntroduction(
-  locale: Locale,
-  topicId: TopicId,
-) {
+export function getUrlForIntroduction(locale: Locale, topicId: TopicId) {
   return `https://github.com/appt-org/appt-samples/tree/develop/data/${locale}/${topicId}/README.md`;
 }
 
-export function getContributionUrlForSample(
+export function getUrlForSample(
   locale: Locale,
   topicId: TopicId,
   framework: Framework,

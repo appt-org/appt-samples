@@ -6,10 +6,10 @@ import {
 } from "../generated";
 import type { Topic, Loader } from "../types";
 import {
-  getContributionUrlForIntroduction,
-  getContributionUrlForSample,
-  getImportPathForIntroduction,
-  getImportPathForSample,
+  getUrlForIntroduction,
+  getUrlForSample,
+  getPathForIntroduction,
+  getPathForSample,
 } from "./utils";
 import { frameworkIdToLabelMap } from "../frameworks";
 
@@ -69,8 +69,8 @@ export async function querySamples(
       locale,
       topicId,
       introduction: {
-        contributionUrl: getContributionUrlForIntroduction(locale, topicId),
-        importPath: getImportPathForIntroduction(locale, topicId),
+        url: getUrlForIntroduction(locale, topicId),
+        path: getPathForIntroduction(locale, topicId),
         content: loader.loadTopicIntroduction(locale, topicId),
       },
       samples: [],
@@ -89,12 +89,8 @@ export async function querySamples(
           id: framework,
           label: frameworkIdToLabelMap[framework],
         },
-        contributionUrl: getContributionUrlForSample(
-          locale,
-          topicId,
-          framework,
-        ),
-        importPath: getImportPathForSample(locale, topicId, framework),
+        url: getUrlForSample(locale, topicId, framework),
+        path: getPathForSample(locale, topicId, framework),
         content: loader.loadSample(locale, topicId, framework),
       });
     }

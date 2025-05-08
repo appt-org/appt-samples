@@ -2,10 +2,10 @@ import { samples, type Locale, type TopicId, Framework } from "../generated";
 import type { Topic, Loader, Sample } from "../types";
 import { frameworkIdToLabelMap } from "../frameworks";
 import {
-  getContributionUrlForIntroduction,
-  getContributionUrlForSample,
-  getImportPathForIntroduction,
-  getImportPathForSample,
+  getUrlForIntroduction,
+  getUrlForSample,
+  getPathForIntroduction,
+  getPathForSample,
 } from "./utils";
 
 interface GetTopicQuery {
@@ -60,11 +60,8 @@ export async function getTopic(
     locale: query.locale,
     topicId: query.topicId,
     introduction: {
-      importPath: getImportPathForIntroduction(query.locale, query.topicId),
-      contributionUrl: getContributionUrlForIntroduction(
-        query.locale,
-        query.topicId,
-      ),
+      path: getPathForIntroduction(query.locale, query.topicId),
+      url: getUrlForIntroduction(query.locale, query.topicId),
       content: await loader.loadTopicIntroduction(query.locale, query.topicId),
     },
     samples: await Promise.all(
@@ -73,16 +70,8 @@ export async function getTopic(
           id: framework,
           label: frameworkIdToLabelMap[framework],
         },
-        importPath: getImportPathForSample(
-          query.locale,
-          query.topicId,
-          framework,
-        ),
-        contributionUrl: getContributionUrlForSample(
-          query.locale,
-          query.topicId,
-          framework,
-        ),
+        path: getPathForSample(query.locale, query.topicId, framework),
+        url: getUrlForSample(query.locale, query.topicId, framework),
         content: await loader.loadSample(
           query.locale,
           query.topicId,
