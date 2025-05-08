@@ -30,7 +30,7 @@ interface WebpackContext {
  * // Use the loader to retrieve topic(s) and its samples
  * const topic = await getTopic(webpackLoader, {
  *   locale: 'en',
- *   topicId: 'accessibility-role',
+ *   technique: 'accessibility-role',
  * });
  *
  * @see {@link https://webpack.js.org/guides/dependency-management/#requirecontext}
@@ -46,14 +46,14 @@ export function createWebpackLoader(webpackContext: WebpackContext): Loader {
     }, {});
 
   return {
-    loadTopicIntroduction: async (_, locale, topicId) => {
-      const lookupKey = constructLookupKey(locale, topicId, "README");
+    loadTopicIntroduction: async (_, locale, technique) => {
+      const lookupKey = constructLookupKey(locale, technique, "README");
       const relativePath = pathMap[lookupKey];
 
       return await webpackContext(relativePath);
     },
-    loadSample: async (_, locale, topicId, framework) => {
-      const lookupKey = constructLookupKey(locale, topicId, framework);
+    loadSample: async (_, locale, technique, framework) => {
+      const lookupKey = constructLookupKey(locale, technique, framework);
       const relativePath = pathMap[lookupKey];
 
       return await webpackContext(relativePath);
@@ -62,14 +62,14 @@ export function createWebpackLoader(webpackContext: WebpackContext): Loader {
 }
 
 /**
- * Constructs a lookup-key with the format `[locale].[topicId].[framework]`.
+ * Constructs a lookup-key with the format `[locale].[technique].[framework]`.
  */
 function constructLookupKey(
   locale: string,
-  topicId: string,
+  technique: string,
   framework: string,
 ) {
-  return `${locale}.${topicId}.${framework}`;
+  return `${locale}.${technique}.${framework}`;
 }
 
 /**
@@ -83,7 +83,7 @@ function constructLookupKeyForRelativePath(relativePath: string) {
     );
   }
 
-  // Get from the filename: [locale, topicId, framework]
+  // Get from the filename: [locale, technique, framework]
   const sampleMeta = filename.split(".").slice(0, 3);
   if (sampleMeta.length !== 3) {
     throw new Error(

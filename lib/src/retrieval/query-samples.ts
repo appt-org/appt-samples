@@ -2,7 +2,7 @@ import {
   samples,
   type Locale,
   type Framework,
-  type TopicId,
+  type Technique,
 } from "../generated";
 import type { Topic, Loader } from "../types";
 import {
@@ -15,20 +15,20 @@ import { frameworkIdToLabelMap } from "../frameworks";
 
 interface SamplesQuery {
   locale: Locale;
-  topicIds?: Array<TopicId>;
-  frameworks?: Array<Framework>;
+  techniques?: Technique[];
+  frameworks?: Framework[];
 }
 
 /**
  * Retrieves topics and samples based on specified query parameters and options.
  *
- * This function filters topics and samples by locale, topic-id, and/or framework.
- * If the topic-id or framework parameters are left empty, everything is retrieved.
+ * This function filters topics and samples by locale, technique, and/or framework.
+ * If the technique or framework parameters are left empty, everything is retrieved.
  *
  * @param {Loader} loader - The loader to use
  * @param {SamplesQuery} query - The query parameters for filtering samples
  * @param {Locale} query.locale - The locale to get samples from
- * @param {TopicId[]} [query.topicIds] - An optional array of topic IDs to retrieve by
+ * @param {Technique[]} [query.techniques] - An optional array of techniques to retrieve by
  * @param {Framework[]} [query.frameworks] - An optional array of frameworks to retrieve by
  *
  * @returns {Topic[]} An array of topics matching the query parameters
@@ -41,14 +41,14 @@ interface SamplesQuery {
  * // Get all topics with samples for Android and iOS, for the 'en' locale
  * const androidAndIosSamples = querySamples(
  *   loader,
- *   { locale: 'en', framework: ['android', 'ios'] },
+ *   { locale: 'en', frameworks: ['android', 'ios'] },
  * );
  *
  * @example
  * // Get the Accessibility Role topic with all frameworks, in 'en' locale
  * const androidAndIosSamples = querySamples(
  *   loader,
- *   { locale: 'en', topicId: ['accessibility-role'] },
+ *   { locale: 'en', techniques: ['accessibility-role'] },
  * );
  */
 export async function querySamples(
@@ -58,24 +58,24 @@ export async function querySamples(
   const results: Topic[] = [];
   const locale = query.locale;
 
-  const topicsForLocale = samples[query.locale];
+  const techniquesForLocale = samples[query.locale];
 
-  for (const topicId of Object.keys(topicsForLocale) as TopicId[]) {
-    if (query.topicIds && !query.topicIds.includes(topicId)) {
+  for (const technique of Object.keys(techniquesForLocale) as Technique[]) {
+    if (query.techniques && !query.techniques.includes(technique)) {
       continue;
     }
 
-    const introductionPath = getPathForIntroduction(locale, topicId);
+    const introductionPath = getPathForIntroduction(locale, technique);
     results.push({
       locale,
-      topicId,
+      technique: technique,
       introduction: {
-        url: getUrlForIntroduction(locale, topicId),
+        url: getUrlForIntroduction(locale, technique),
         path: introductionPath,
         content: loader.loadTopicIntroduction(
           introductionPath,
           locale,
-          topicId,
+          technique,
         ),
       },
       samples: [],
@@ -83,21 +83,21 @@ export async function querySamples(
 
     const topicIndex = results.length - 1;
 
-    const frameworksForSample = topicsForLocale[topicId];
+    const frameworksForSample = techniquesForLocale[technique];
     for (const framework of frameworksForSample) {
       if (query.frameworks && !query.frameworks.includes(framework)) {
         continue;
       }
 
-      const samplePath = getPathForSample(locale, topicId, framework);
+      const samplePath = getPathForSample(locale, technique, framework);
       results[topicIndex].samples.push({
         framework: {
           id: framework,
           label: frameworkIdToLabelMap[framework],
         },
-        url: getUrlForSample(locale, topicId, framework),
+        url: getUrlForSample(locale, technique, framework),
         path: samplePath,
-        content: loader.loadSample(samplePath, locale, topicId, framework),
+        content: loader.loadSample(samplePath, locale, technique, framework),
       });
     }
   }

@@ -1,8 +1,8 @@
-import type { Locale, Framework, TopicId } from "./generated";
+import type { Locale, Framework, Technique } from "./generated";
 
 export interface Topic {
   locale: Locale;
-  topicId: TopicId;
+  technique: Technique;
   introduction: Introduction;
   samples: Sample[];
 }
@@ -26,11 +26,11 @@ export interface Sample extends ImportableMarkdown {
  *
  * @interface Loader
  *
- * @property {function(path: string, Locale, TopicId, Framework): Promise<any>} loadSample
+ * @property {function(path: string, Locale, Technique, Framework): Promise<any>} loadSample
  *   Loads a sample for the specified locale, topic, and framework.
  *   Returns a Promise resolving to the sample content.
  *
- * @property {function(path: string, Locale, TopicId): Promise<any>} loadTopicIntroduction
+ * @property {function(path: string, Locale, Technique): Promise<any>} loadTopicIntroduction
  *   Loads the topic introduction for the specified locale and topic.
  *   Returns a Promise resolving to the introduction content.
  */
@@ -38,13 +38,13 @@ export interface Loader {
   loadSample: (
     path: string,
     locale: Locale,
-    topicId: TopicId,
+    technique: Technique,
     framework: Framework,
   ) => Promise<any>;
   loadTopicIntroduction: (
     path: string,
     locale: Locale,
-    topicId: TopicId,
+    technique: Technique,
   ) => Promise<any>;
 }
 
