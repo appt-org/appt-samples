@@ -74,7 +74,7 @@ import { createWebpackLoader } from '@appt.org/samples';
 
 // Create a webpack context that includes all markdown files
 const webpackContext = require.context(
-  '@appt.org/samples/code-samples',
+  '@appt.org/samples/samples',
   true, // Include subdirectories
   /\.md$/, // Only include markdown files
   'lazy' // Only load a sample when it is requested in retrieval

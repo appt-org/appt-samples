@@ -21,8 +21,8 @@ interface WebpackContext {
  *   via the provided Webpack context.
  *
  * @example
- * // Create a Webpack context for all markdown files under the code-samples directory (lazy loaded)
- * const samplesContext = require.context('@appt.org/samples/code-samples', true, /\.md$/, 'lazy');
+ * // Create a Webpack context for all markdown files under the samples directory (lazy loaded)
+ * const samplesContext = require.context('@appt.org/samples/samples', true, /\.md$/, 'lazy');
  *
  * // Create a Loader using the Webpack context
  * const webpackLoader = createWebpackLoader(samplesContext);

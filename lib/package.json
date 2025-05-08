@@ -11,9 +11,9 @@
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
-    "./code-samples": "./dist/code-samples",
-    "./code-samples/*": "./dist/code-samples/*",
-    "./dist/code-samples/*": "./dist/code-samples/*"
+    "./samples": "./dist/samples",
+    "./samples/*": "./dist/samples/*",
+    "./dist/samples/*": "./dist/samples/*"
   },
   "files": [
     "dist"
