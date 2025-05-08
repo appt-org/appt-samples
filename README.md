@@ -16,6 +16,27 @@ This package contains two things:
 
 Details on the library usage can be found in the [lib/readme document](/lib/README.md).
 
+## Code samples
+
+Our code samples are located in the `/data/` folder.
+
+The data folder contains subfolders for each locale, e.g. `en` for English.
+
+The locale folder contains subfolders for each technique, e.g. `accessibility-label`.
+
+The technique folder should include a `README.md` briefly explaining it's purpose.
+
+It should also include at least one of the following files:
+
+- `android.md`: Android code sample
+- `flutter.md`: Flutter code sample
+- `ios.md`: iOS code sample
+- `jetpack-compose.md`: Jetpack Compose code sample
+- `net-maui.md`: .NET MAUI code sample
+- `react-native.md`: React Native code sample
+- `swiftui.md`: SwiftUI code sample
+- `xamarin.md`: Xamarin code sample
+
 ## Local setup
 
 ### Prerequisites
