@@ -3,9 +3,11 @@ import type { Locale, Framework, TopicId } from "./generated";
 export interface Topic {
   locale: Locale;
   topicId: TopicId;
-  introduction: ImportableMarkdown;
+  introduction: Introduction;
   samples: Sample[];
 }
+
+export interface Introduction extends ImportableMarkdown {}
 
 export interface Sample extends ImportableMarkdown {
   framework: {
