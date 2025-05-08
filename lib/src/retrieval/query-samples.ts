@@ -65,13 +65,18 @@ export async function querySamples(
       continue;
     }
 
+    const introductionPath = getPathForIntroduction(locale, topicId);
     results.push({
       locale,
       topicId,
       introduction: {
         url: getUrlForIntroduction(locale, topicId),
-        path: getPathForIntroduction(locale, topicId),
-        content: loader.loadTopicIntroduction(locale, topicId),
+        path: introductionPath,
+        content: loader.loadTopicIntroduction(
+          introductionPath,
+          locale,
+          topicId,
+        ),
       },
       samples: [],
     });
@@ -84,14 +89,15 @@ export async function querySamples(
         continue;
       }
 
+      const samplePath = getPathForSample(locale, topicId, framework);
       results[topicIndex].samples.push({
         framework: {
           id: framework,
           label: frameworkIdToLabelMap[framework],
         },
         url: getUrlForSample(locale, topicId, framework),
-        path: getPathForSample(locale, topicId, framework),
-        content: loader.loadSample(locale, topicId, framework),
+        path: samplePath,
+        content: loader.loadSample(samplePath, locale, topicId, framework),
       });
     }
   }

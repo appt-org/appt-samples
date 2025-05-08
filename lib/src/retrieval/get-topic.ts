@@ -56,28 +56,41 @@ export async function getTopic(
       )
     : availableFrameworks;
 
+  const introductionPath = getPathForIntroduction(query.locale, query.topicId);
   return {
     locale: query.locale,
     topicId: query.topicId,
     introduction: {
-      path: getPathForIntroduction(query.locale, query.topicId),
+      path: introductionPath,
       url: getUrlForIntroduction(query.locale, query.topicId),
-      content: await loader.loadTopicIntroduction(query.locale, query.topicId),
+      content: await loader.loadTopicIntroduction(
+        introductionPath,
+        query.locale,
+        query.topicId,
+      ),
     },
     samples: await Promise.all(
-      frameworks.map<Promise<Sample>>(async (framework) => ({
-        framework: {
-          id: framework,
-          label: frameworkIdToLabelMap[framework],
-        },
-        path: getPathForSample(query.locale, query.topicId, framework),
-        url: getUrlForSample(query.locale, query.topicId, framework),
-        content: await loader.loadSample(
+      frameworks.map<Promise<Sample>>(async (framework) => {
+        const samplePath = getPathForSample(
           query.locale,
           query.topicId,
           framework,
-        ),
-      })),
+        );
+        return {
+          framework: {
+            id: framework,
+            label: frameworkIdToLabelMap[framework],
+          },
+          path: samplePath,
+          url: getUrlForSample(query.locale, query.topicId, framework),
+          content: await loader.loadSample(
+            samplePath,
+            query.locale,
+            query.topicId,
+            framework,
+          ),
+        };
+      }),
     ),
   };
 }

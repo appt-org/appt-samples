@@ -46,13 +46,13 @@ export function createWebpackLoader(webpackContext: WebpackContext): Loader {
     }, {});
 
   return {
-    loadTopicIntroduction: async (locale, topicId) => {
+    loadTopicIntroduction: async (_, locale, topicId) => {
       const lookupKey = constructLookupKey(locale, topicId, "README");
       const relativePath = pathMap[lookupKey];
 
       return await webpackContext(relativePath);
     },
-    loadSample: async (locale, topicId, framework) => {
+    loadSample: async (_, locale, topicId, framework) => {
       const lookupKey = constructLookupKey(locale, topicId, framework);
       const relativePath = pathMap[lookupKey];
 

@@ -38,11 +38,16 @@ The library defines a `Loader` interface that any loader must implement:
 ```typescript
 interface Loader {
   loadSample: (
+    path: string,
     locale: Locale,
     topicId: TopicId,
     framework: Framework,
   ) => Promise<any>;
-  loadTopicIntroduction: (locale: Locale, topicId: TopicId) => Promise<any>;
+  loadTopicIntroduction: (
+    path: string,
+    locale: Locale,
+    topicId: TopicId
+  ) => Promise<any>;
 }
 ```
 
@@ -105,16 +110,24 @@ import { Loader } from '@appt.org/samples';
 
 // Create a custom loader
 const customLoader: Loader = {
-  loadSample: async (locale, topicId, framework) => {
-    // Your custom implementation to load framework samples
-    // This could use fetch, dynamic imports, or any other method
-    const content = await yourCustomLoadingMethod(locale, topicId, framework);
-    return content;
-  },
-  loadTopicIntroduction: async (locale, topicId) => {
+  loadSample: async (path, locale, topicId, framework) => {
+    // Example of what the values might be
+    // path:      @appt/samples/samples/en.accessibility-label.android.md
+    // locale:    en
+    // topicId:   accessibility-label
+    // framework: android
+
     // Your custom implementation to load sample introductions
-    const content = await yourCustomLoadingMethod(locale, topicId, 'README');
-    return content;
+    return await (path);
+  },
+  loadTopicIntroduction: async (path, locale, topicId) => {
+    // Example of what the values might be
+    // path:      @appt/samples/samples/en.accessibility-label.README.md
+    // locale:    en
+    // topicId:   accessibility-label
+
+    // Your custom implementation to load sample introductions
+    return await (path);
   }
 };
 
