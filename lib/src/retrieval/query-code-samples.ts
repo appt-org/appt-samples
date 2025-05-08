@@ -45,10 +45,10 @@ interface CodeSamplesQuery {
  * );
  *
  * @example
- * // Get the Dark Mode topic with all frameworks, in 'en' locale
+ * // Get the Accessibility Role topic with all frameworks, in 'en' locale
  * const androidAndIosSamples = queryCodeSamples(
  *   loader,
- *   { locale: 'en', topicId: ['screen-dark-mode'] },
+ *   { locale: 'en', topicId: ['accessibility-role'] },
  * );
  */
 export async function queryCodeSamples(

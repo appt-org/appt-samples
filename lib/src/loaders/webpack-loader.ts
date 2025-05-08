@@ -30,7 +30,7 @@ interface WebpackContext {
  * // Use the loader to retrieve topic(s) and its code samples
  * const topic = await getTopic(webpackLoader, {
  *   locale: 'en',
- *   topicId: 'screen-dark-mode',
+ *   topicId: 'accessibility-role',
  * });
  *
  * @see {@link https://webpack.js.org/guides/dependency-management/#requirecontext}

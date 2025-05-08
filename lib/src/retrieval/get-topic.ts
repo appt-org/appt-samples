@@ -30,14 +30,14 @@ interface GetTopicQuery {
  * @returns {Promise<Topic|null>} The topic with its introduction and code samples, or `null` if not found
  *
  * @example
- * // Get the 'screen-dark-mode' topic with all available frameworks in 'en' locale
- * const topic = await getTopic(loader, { locale: 'en', topicId: 'screen-dark-mode' });
+ * // Get the 'accessibility-role' topic with all available frameworks in 'en' locale
+ * const topic = await getTopic(loader, { locale: 'en', topicId: 'accessibility-role' });
  *
  * @example
- * // Get the 'screen-dark-mode' topic, but only for the 'android' and 'ios' frameworks
+ * // Get the 'accessibility-role' topic, but only for the 'android' and 'ios' frameworks
  * const topic = await getTopic(loader, {
  *   locale: 'en',
- *   topicId: 'screen-dark-mode',
+ *   topicId: 'accessibility-role',
  *   frameworks: ['android', 'ios'],
  * });
  */
