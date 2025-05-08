@@ -9,25 +9,25 @@ interface WebpackContext {
 }
 
 /**
- * Creates a Loader instance that loads topic introductions and code samples using a Webpack context.
+ * Creates a Loader instance that loads topic introductions and samples using a Webpack context.
  *
  * This function adapts a (possibly lazy) Webpack context (such as one created by `require.context`)
- * to the Loader interface expected by topic and code sample query functions.
+ * to the Loader interface expected by topic and sample query functions.
  *
  * @param {WebpackContext} webpackContext - The Webpack context to use for loading files.
  *   Typically created with `require.context` and configured for lazy loading.
  *
- * @returns {Loader} A Loader implementation that loads topic introductions and code samples
+ * @returns {Loader} A Loader implementation that loads topic introductions and samples
  *   via the provided Webpack context.
  *
  * @example
  * // Create a Webpack context for all markdown files under the code-samples directory (lazy loaded)
- * const codeSamplesContext = require.context('@appt.org/samples/code-samples', true, /\.md$/, 'lazy');
+ * const samplesContext = require.context('@appt.org/samples/code-samples', true, /\.md$/, 'lazy');
  *
  * // Create a Loader using the Webpack context
- * const webpackLoader = createWebpackLoader(codeSamplesContext);
+ * const webpackLoader = createWebpackLoader(samplesContext);
  *
- * // Use the loader to retrieve topic(s) and its code samples
+ * // Use the loader to retrieve topic(s) and its samples
  * const topic = await getTopic(webpackLoader, {
  *   locale: 'en',
  *   topicId: 'accessibility-role',
@@ -52,7 +52,7 @@ export function createWebpackLoader(webpackContext: WebpackContext): Loader {
 
       return await webpackContext(relativePath);
     },
-    loadCodeSample: async (locale, topicId, framework) => {
+    loadSample: async (locale, topicId, framework) => {
       const lookupKey = constructLookupKey(locale, topicId, framework);
       const relativePath = pathMap[lookupKey];
 

@@ -131,14 +131,14 @@ This flexibility allows you to integrate the library with any environment or bui
 
 ## Retrieval
 
-The library provides two main functions for retrieving code samples: `queryCodeSamples` and `getTopic`. These functions allow you to fetch code samples based on various criteria such as locale, topic ID, and framework.
+The library provides two main functions for retrieving code samples: `querySamples` and `getTopic`. These functions allow you to fetch code samples based on various criteria such as locale, topic ID, and framework.
 
-### queryCodeSamples
+### querySamples
 
-The `queryCodeSamples` function retrieves multiple topics and their code samples based on specified query parameters.
+The `querySamples` function retrieves multiple topics and their code samples based on specified query parameters.
 
 ```typescript
-async function queryCodeSamples(
+async function querySamples(
   loader: Loader,
   query: {
     locale: Locale;
@@ -159,16 +159,16 @@ If `topicId` or `framework` parameters are omitted, all available topics or fram
 
 ```javascript
 // Get all code topics with all platforms for the 'en' locale
-const allSamples = await queryCodeSamples(loader, { locale: 'en' });
+const allSamples = await querySamples(loader, { locale: 'en' });
 
 // Get all topics with code samples for Android and iOS, for the 'en' locale
-const androidAndIosSamples = await queryCodeSamples(
+const androidAndIosSamples = await querySamples(
   loader,
   { locale: 'en', frameworks: ['android', 'ios'] }
 );
 
 // Get the Dark Mode topic with all frameworks, in 'en' locale
-const darkModeSamples = await queryCodeSamples(
+const darkModeSamples = await querySamples(
   loader,
   { locale: 'en', topicIds: ['screen-dark-mode'] }
 );

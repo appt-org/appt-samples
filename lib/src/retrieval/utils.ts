@@ -4,7 +4,7 @@ export function getImportPathForIntroduction(locale: Locale, topicId: TopicId) {
   return `@appt.org/samples/code-samples/${locale}.${topicId}.README.md`;
 }
 
-export function getImportPathForCodeSample(
+export function getImportPathForSample(
   locale: Locale,
   topicId: TopicId,
   framework: Framework,
@@ -19,7 +19,7 @@ export function getContributionUrlForIntroduction(
   return `https://github.com/appt-org/appt-website/tree/develop/src/data/code-samples/${locale}/${topicId}/README.md`;
 }
 
-export function getContributionUrlForCodeSample(
+export function getContributionUrlForSample(
   locale: Locale,
   topicId: TopicId,
   framework: Framework,

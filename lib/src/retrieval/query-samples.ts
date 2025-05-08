@@ -7,53 +7,53 @@ import {
 import type { Topic, Loader } from "../types";
 import {
   getContributionUrlForIntroduction,
-  getContributionUrlForCodeSample,
+  getContributionUrlForSample,
   getImportPathForIntroduction,
-  getImportPathForCodeSample,
+  getImportPathForSample,
 } from "./utils";
 import { frameworkIdToLabelMap } from "../frameworks";
 
-interface CodeSamplesQuery {
+interface SamplesQuery {
   locale: Locale;
   topicIds?: Array<TopicId>;
   frameworks?: Array<Framework>;
 }
 
 /**
- * Retrieves topics and code samples based on specified query parameters and options.
+ * Retrieves topics and samples based on specified query parameters and options.
  *
- * This function filters topics and code-samples by locale, topic-id, and/or framework.
+ * This function filters topics and samples by locale, topic-id, and/or framework.
  * If the topic-id or framework parameters are left empty, everything is retrieved.
  *
  * @param {Loader} loader - The loader to use
- * @param {CodeSamplesQuery} query - The query parameters for filtering code samples
- * @param {Locale} query.locale - The locale to get code samples from
+ * @param {SamplesQuery} query - The query parameters for filtering samples
+ * @param {Locale} query.locale - The locale to get samples from
  * @param {TopicId[]} [query.topicIds] - An optional array of topic IDs to retrieve by
  * @param {Framework[]} [query.frameworks] - An optional array of frameworks to retrieve by
  *
  * @returns {Topic[]} An array of topics matching the query parameters
  *
  * @example
- * // Get all code topics with all platforms for the 'en' locale
- * const allSamples = queryCodeSamples(loader, { locale: 'en' });
+ * // Get all topics with all platforms for the 'en' locale
+ * const allSamples = querySamples(loader, { locale: 'en' });
  *
  * @example
- * // Get all topics with code samples for Android and iOS, for the 'en' locale
- * const androidAndIosSamples = queryCodeSamples(
+ * // Get all topics with samples for Android and iOS, for the 'en' locale
+ * const androidAndIosSamples = querySamples(
  *   loader,
  *   { locale: 'en', framework: ['android', 'ios'] },
  * );
  *
  * @example
  * // Get the Accessibility Role topic with all frameworks, in 'en' locale
- * const androidAndIosSamples = queryCodeSamples(
+ * const androidAndIosSamples = querySamples(
  *   loader,
  *   { locale: 'en', topicId: ['accessibility-role'] },
  * );
  */
-export async function queryCodeSamples(
+export async function querySamples(
   loader: Loader,
-  query: CodeSamplesQuery,
+  query: SamplesQuery,
 ): Promise<Topic[]> {
   const results: Topic[] = [];
   const locale = query.locale;
@@ -73,7 +73,7 @@ export async function queryCodeSamples(
         importPath: getImportPathForIntroduction(locale, topicId),
         content: loader.loadTopicIntroduction(locale, topicId),
       },
-      codeSamples: [],
+      samples: [],
     });
 
     const topicIndex = results.length - 1;
@@ -84,18 +84,18 @@ export async function queryCodeSamples(
         continue;
       }
 
-      results[topicIndex].codeSamples.push({
+      results[topicIndex].samples.push({
         framework: {
           id: framework,
           label: frameworkIdToLabelMap[framework],
         },
-        contributionUrl: getContributionUrlForCodeSample(
+        contributionUrl: getContributionUrlForSample(
           locale,
           topicId,
           framework,
         ),
-        importPath: getImportPathForCodeSample(locale, topicId, framework),
-        content: loader.loadCodeSample(locale, topicId, framework),
+        importPath: getImportPathForSample(locale, topicId, framework),
+        content: loader.loadSample(locale, topicId, framework),
       });
     }
   }
