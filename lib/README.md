@@ -37,7 +37,7 @@ The library defines a `Loader` interface that any loader must implement:
 
 ```typescript
 interface Loader {
-  loadCodeSample: (
+  loadSample: (
     locale: Locale,
     topicId: TopicId,
     framework: Framework,
@@ -83,7 +83,7 @@ const webpackContext = require.context(
 // Create a loader using the webpack context
 const loader = createWebpackLoader(webpackContext);
 
-// Now you can use the loader with the getCodeSample function
+// Now you can use the loader with the getTopic function
 import { getTopic } from '@appt.org/samples';
 
 const topic = await getTopic(loader, {
@@ -91,7 +91,7 @@ const topic = await getTopic(loader, {
   topicId: 'screen-dark-mode'
 });
 
-// The imported markdown file is available under topic.codeSamples[number].content.
+// The imported markdown file is available under topic.samples[number].content.
 // The value of `content` depends on your own Webpack configuration.
 ```
 
@@ -105,7 +105,7 @@ import { Loader } from '@appt.org/samples';
 
 // Create a custom loader
 const customLoader: Loader = {
-  loadCodeSample: async (locale, topicId, framework) => {
+  loadSample: async (locale, topicId, framework) => {
     // Your custom implementation to load framework samples
     // This could use fetch, dynamic imports, or any other method
     const content = await yourCustomLoadingMethod(locale, topicId, framework);
@@ -118,10 +118,10 @@ const customLoader: Loader = {
   }
 };
 
-// Use your custom loader with getCodeSample
+// Use your custom loader with getTopic
 import { getTopic } from '@appt.org/samples';
 
-const codeSample = await getTopic(customLoader, {
+const topic = await getTopic(customLoader, {
   locale: 'en',
   topicId: 'screen-dark-mode'
 });
