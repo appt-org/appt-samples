@@ -1,7 +1,6 @@
 import type { Locale, Framework, Technique } from "./generated";
 
 export interface Topic {
-  locale: Locale;
   technique: Technique;
   introduction: Introduction;
   samples: Sample[];
@@ -59,4 +58,5 @@ interface ImportableMarkdown {
    */
   url: string;
   content: any;
+  locale: Locale;
 }

@@ -10,3 +10,5 @@ export const frameworkIdToLabelMap: Record<Framework, string> = {
   swiftui: "SwiftUI",
   xamarin: "Xamarin",
 };
+
+export const frameworks = Object.keys(frameworkIdToLabelMap) as Framework[];

@@ -8,7 +8,7 @@ This package contains two things:
 
 1. Code samples (in Markdown format)
 2. Loaders - A way to let the library know how to import these files in your environment.
-3. A retrieval function to query the code samples, based on locale, sample-id and/or platform.
+3. A retrieval function to query the code samples, based on locale, technique and/or platform.
 
 The package is responsible solely for data and does not handle any user interface (UI) elements. UI
 implementation is left to the implementing party. The implementing party should also configure their environment
@@ -31,7 +31,7 @@ of Markdown (.md) files.
 #### Understanding Loaders
 
 Loaders are a key concept in this library. They provide a way to dynamically import Markdown files based on locale,
-sample ID, and framework.
+technique, and framework.
 
 The library defines a `Loader` interface that any loader must implement:
 
@@ -92,7 +92,7 @@ const loader = createWebpackLoader(webpackContext);
 import { getTopic } from '@appt.org/samples';
 
 const topic = await getTopic(loader, {
-  locale: 'en',
+  locale: ['en'],
   technique: 'accessibility-role'
 });
 
@@ -135,7 +135,7 @@ const customLoader: Loader = {
 import { getTopic } from '@appt.org/samples';
 
 const topic = await getTopic(customLoader, {
-  locale: 'en',
+  locale: ['en'],
   technique: 'accessibility-role'
 });
 ```
@@ -154,7 +154,7 @@ The `querySamples` function retrieves multiple topics and their code samples bas
 async function querySamples(
   loader: Loader,
   query: {
-    locale: Locale;
+    locale: Locale[];
     techniques?: Technique[];
     frameworks?: Framework[];
   }
@@ -162,7 +162,7 @@ async function querySamples(
 ```
 
 This function filters topics and code samples by:
-- `locale`      (required): The language locale to get code samples from
+- `locale`      (required): The locale to get samples from. If a sample is not available in the first selected locale, we fall back to the second, then the third etc.
 - `techniques`  (optional): An array of techniques to filter by
 - `frameworks`  (optional): An array of frameworks to filter by
 
@@ -172,18 +172,18 @@ If `techniques` or `frameworks` parameters are omitted, all available techniques
 
 ```javascript
 // Get all code topics with all platforms for the 'en' locale
-const allSamples = await querySamples(loader, { locale: 'en' });
+const allSamples = await querySamples(loader, { locale: ['en'] });
 
 // Get all topics with code samples for Android and iOS, for the 'en' locale
 const androidAndIosSamples = await querySamples(
   loader,
-  { locale: 'en', frameworks: ['android', 'ios'] }
+  { locale: ['en'], frameworks: ['android', 'ios'] }
 );
 
 // Get the Accessibility Role topic with all frameworks, in 'en' locale
 const darkModeSamples = await querySamples(
   loader,
-  { locale: 'en', techniques: ['accessibility-role'] }
+  { locale: ['en'], techniques: ['accessibility-role'] }
 );
 ```
 
@@ -195,7 +195,7 @@ The `getTopic` function retrieves a single topic and its code samples based on s
 async function getTopic(
   loader: Loader,
   query: {
-    locale: Locale;
+    locale: Locale[];
     technique: Technique;
     frameworks?: Framework[];
   }
@@ -203,7 +203,7 @@ async function getTopic(
 ```
 
 This function fetches a topic by:
-- `locale`      (required): The language locale to get the topic from
+- `locale`      (required): The locale to get topic from. If a topic or sample is not available in the first selected locale, we fall back to the second, then the third etc.
 - `technique`   (required): The technique to retrieve
 - `frameworks`  (optional): An array of frameworks to filter code samples by
 
@@ -213,19 +213,17 @@ If the requested technique or locale does not exist, `null` is returned. If the 
 
 ```javascript
 // Get the 'accessibility-role' topic with all available frameworks in 'en' locale
-const topic = await getTopic(loader, { locale: 'en', technique: 'accessibility-role' });
+const topic = await getTopic(loader, { locale: ['en'], technique: 'accessibility-role' });
 
 // Get the 'accessibility-role' topic, but only for the 'android' and 'ios' frameworks
 const topic = await getTopic(loader, {
-  locale: 'en',
+  locale: ['en'],
   technique: 'accessibility-role',
   frameworks: ['android', 'ios'],
 });
 ```
 
 The returned `Topic` object contains the topic's introduction and code samples for the specified frameworks, along with metadata like import paths and contribution URLs.
-
-
 
 ## License
 

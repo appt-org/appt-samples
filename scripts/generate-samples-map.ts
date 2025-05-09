@@ -57,6 +57,7 @@ for (const locale of locales) {
       console.warn(
         `[Warn]: skipping ${technique} because it does not contain a README.md file`,
       );
+      continue;
     }
 
     techniqueEntries[locale][technique] = [];
@@ -82,7 +83,7 @@ ${unionType(true, "Locale", locales)}
 ${unionType(true, "Technique", techniques)}
 ${unionType(true, "Framework", frameworks)}
 
-export const samples = ${JSON.stringify(techniqueEntries, null, 2)} as const satisfies Record<Locale, Record<Technique, Framework[]>>;
+export const samples: Record<Locale, Partial<Record<Technique, Framework[]>>> = ${JSON.stringify(techniqueEntries, null, 2)};
 `;
 
 fs.writeFileSync("../lib/src/generated.ts", fileContent);
