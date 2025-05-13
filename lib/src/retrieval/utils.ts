@@ -13,7 +13,7 @@ export function getPathForSample(
 }
 
 export function getUrlForIntroduction(locale: Locale, technique: Technique) {
-  return `https://github.com/appt-org/appt-samples/tree/develop/data/${locale}/${technique}/README.md`;
+  return `https://github.com/appt-org/appt-samples/blob/main/data/${locale}/${technique}/README.md?plain=1`;
 }
 
 export function getUrlForSample(
@@ -21,7 +21,7 @@ export function getUrlForSample(
   technique: Technique,
   framework: Framework,
 ) {
-  return `https://github.com/appt-org/appt-samples/tree/develop/data/${locale}/${technique}/${framework}.md`;
+  return `https://github.com/appt-org/appt-samples/blob/main/data/${locale}/${technique}/${framework}.md?plain=1`;
 }
 
 /**

@@ -29,8 +29,8 @@ export interface Sample extends ImportableMarkdown {
  *   Loads a sample for the specified locale, topic, and framework.
  *   Returns a Promise resolving to the sample content.
  *
- * @property {function(path: string, Locale, Technique): Promise<any>} loadTopicIntroduction
- *   Loads the topic introduction for the specified locale and topic.
+ * @property {function(path: string, Locale, Technique): Promise<any>} loadIntroduction
+ *   Loads the introduction for the specified locale and topic.
  *   Returns a Promise resolving to the introduction content.
  */
 export interface Loader {
@@ -40,7 +40,7 @@ export interface Loader {
     technique: Technique,
     framework: Framework,
   ) => Promise<any>;
-  loadTopicIntroduction: (
+  loadIntroduction: (
     path: string,
     locale: Locale,
     technique: Technique,

@@ -43,7 +43,7 @@ interface Loader {
     technique: Technique,
     framework: Framework,
   ) => Promise<any>;
-  loadTopicIntroduction: (
+  loadIntroduction: (
     path: string,
     locale: Locale,
     technique: Technique
@@ -120,7 +120,7 @@ const customLoader: Loader = {
     // Your custom implementation to load sample introductions
     return await (path);
   },
-  loadTopicIntroduction: async (path, locale, technique) => {
+  loadIntroduction: async (path, locale, technique) => {
     // Example of what the values might be
     // path:      @appt/samples/samples/en.accessibility-label.README.md
     // locale:    en
@@ -175,13 +175,13 @@ If `techniques` or `frameworks` parameters are omitted, all available techniques
 const allSamples = await querySamples(loader, { locale: ['en'] });
 
 // Get all topics with code samples for Android and iOS, for the 'en' locale
-const androidAndIosSamples = await querySamples(
+const frameworkSamples = await querySamples(
   loader,
   { locale: ['en'], frameworks: ['android', 'ios'] }
 );
 
-// Get the Accessibility Role topic with all frameworks, in 'en' locale
-const darkModeSamples = await querySamples(
+// Get the accessibility role topic with all frameworks, in 'en' locale
+const techniqueSamples = await querySamples(
   loader,
   { locale: ['en'], techniques: ['accessibility-role'] }
 );

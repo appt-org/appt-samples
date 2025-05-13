@@ -90,7 +90,7 @@ export async function querySamples(
         locale: introductionLocale,
         url: getUrlForIntroduction(introductionLocale, technique),
         path: introductionPath,
-        content: await loader.loadTopicIntroduction(
+        content: await loader.loadIntroduction(
           introductionPath,
           introductionLocale,
           technique,

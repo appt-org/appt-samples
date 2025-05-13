@@ -85,7 +85,7 @@ export async function getTopic(
       locale: introductionLocale,
       path: introductionPath,
       url: getUrlForIntroduction(introductionLocale, query.technique),
-      content: await loader.loadTopicIntroduction(
+      content: await loader.loadIntroduction(
         introductionPath,
         introductionLocale,
         query.technique,

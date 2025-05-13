@@ -46,7 +46,7 @@ export function createWebpackLoader(webpackContext: WebpackContext): Loader {
     }, {});
 
   return {
-    loadTopicIntroduction: async (_, locale, technique) => {
+    loadIntroduction: async (_, locale, technique) => {
       const lookupKey = constructLookupKey(locale, technique, "README");
       const relativePath = pathMap[lookupKey];
 
