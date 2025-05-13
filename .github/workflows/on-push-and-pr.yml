@@ -1,0 +1,32 @@
+name: Run type-checks
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: 'package.json'
+      - name: Install root dependencies
+        run: npm ci
+      - name: Install & type-check scripts project
+        run: cd scripts && npm ci && npm run type-check
+      - name: Generate samples map
+        run: cd scripts && npm run generate-samples-map
+      - name: Install & type-check lib project
+        run: cd lib && npm ci && npm run type-check
+
+      # ---- Verify that committed generated sample is up-to-date ----
+      - name: Verify that the generated sample map is up-to-date
+        run: |
+          if ! git diff --exit-code -- lib/src/generated.ts; then
+            echo "::error ::'lib/src/generated.ts' is not up to date. Please run 'npm run generate-samples-map' and commit the changes.";
+            exit 1
+          fi

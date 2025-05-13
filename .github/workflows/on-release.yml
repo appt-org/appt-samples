@@ -1,0 +1,62 @@
+name: Publish package to NPM
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: 'package.json'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install root dependencies
+        run: npm ci
+      - name: Install & type-check scripts project
+        run: cd scripts && npm ci && npm run type-check
+      - name: Generate samples map
+        run: cd scripts && npm run generate-samples-map
+      - name: Install & type-check lib project
+        run: cd lib && npm ci && npm run type-check
+      - name: Build lib project
+        run: cd lib && npm run build
+
+      # ---- Verify that committed generated sample is up-to-date ----
+      - name: Verify that the generated sample map is up-to-date
+        run: |
+          if ! git diff --exit-code -- lib/src/generated.ts; then
+            echo "::error ::'lib/src/generated.ts' is not up to date. Please run 'npm run generate-samples-map' and commit the changes.";
+            exit 1
+          fi
+
+      # ---- Verify that the release tag is the same as the specified version in the package.json ----
+      - name: Verify version consistency
+        run: |
+          # Extract tag name from the GitHub ref (e.g., refs/tags/v1.2.3 -> v1.2.3)
+          TAG_NAME="${{ github.ref_name }}"
+          echo "Release tag: $TAG_NAME"
+
+          # Remove 'v' prefix if it exists (e.g., v1.2.3 -> 1.2.3)
+          TAG_VERSION="${TAG_NAME#v}"
+          echo "Tag version used for comparison: $TAG_VERSION"
+
+          PKG_VERSION=$(node -p "require('./lib/package.json').version")
+          echo "Version in ./lib/package.json: $PKG_VERSION"
+
+          if [ "$TAG_VERSION" != "$PKG_VERSION" ]; then
+            echo "Error: Release tag version ($TAG_VERSION) does not match package.json version ($PKG_VERSION)."
+            exit 1 # Fail the workflow
+          else
+            echo "Version check passed ($TAG_VERSION == $PKG_VERSION)."
+          fi
+
+      - name: Publish new version to the NPM registry
+        run: cd lib && npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
