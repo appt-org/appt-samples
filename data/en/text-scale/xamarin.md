@@ -55,3 +55,5 @@ namespace Project
     <Setter Property="FontAttributes">
 </Style>
 ```
+
+If there is not enough room to display scaled text, consider implementing a [Large Content Viewer](https://developer.apple.com/videos/play/wwdc2019/261/).

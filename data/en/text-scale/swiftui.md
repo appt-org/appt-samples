@@ -39,3 +39,12 @@ extension View {
     }
 }
 ```
+
+If there is not enough room to display scaled text, consider implementing a [Large Content Viewer](https://developer.apple.com/videos/play/wwdc2019/261/) by using the [accessibilityShowsLargeContentViewer()](https://developer.apple.com/documentation/swiftui/view/accessibilityshowslargecontentviewer()) method.
+
+```swift
+var body: some View {
+    Button("Appt", action: action)
+        .accessibilityShowsLargeContentViewer()
+}
+```

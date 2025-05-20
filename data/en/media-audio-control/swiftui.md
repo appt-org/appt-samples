@@ -1,6 +1,6 @@
 # Audio control - SwiftUI
 
-In iOS apps written in SwiftUI you should always provide a pause or stop button for media. When using [`AVPlayer`](https://developer.apple.com/documentation/avfoundation/avplayer), you should use [`play`](https://developer.apple.com/documentation/avfoundation/avplayer/1386726-play) and [`pause`](https://developer.apple.com/documentation/avfoundation/avplayer/1387895-pause) methods.
+In SwiftUI apps you should always be able to control audio. When using [`AVPlayer`](https://developer.apple.com/documentation/avfoundation/avplayer), you should use [`play`](https://developer.apple.com/documentation/avfoundation/avplayer/1386726-play) and [`pause`](https://developer.apple.com/documentation/avfoundation/avplayer/1387895-pause) methods.
 
 You should also make sure that audio is played through the correct channel. Use [`AVAudioSession`](https://developer.apple.com/documentation/avfaudio/avaudiosession) in combination with [`AVAudioSessionCategory`](https://developer.apple.com/documentation/avfaudio/avaudiosessioncategory) to achieve this.
 

@@ -1,6 +1,6 @@
 # Input dragging - iOS
 
-In iOS, ensure that users who cannot perform precise dragging movements, such as those using assistive devices or with limited dexterity, can still access and interact with app features.
+On iOS, ensure that users who cannot perform precise dragging movements, such as those using assistive devices or with limited dexterity, can still access and interact with app features.
 
 ```swift
 class SliderViewController: UIViewController {
