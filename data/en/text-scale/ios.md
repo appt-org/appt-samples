@@ -43,3 +43,10 @@ extension UIFont {
 // MARK: - Enabling content size category adjustments
 label.adjustsFontForContentSizeCategory = true
 ```
+
+If there is not enough room to display scaled text, consider implementing a [Large Content Viewer](https://developer.apple.com/videos/play/wwdc2019/261/) by using the [showsLargeContentViewer property](https://developer.apple.com/documentation/uikit/uiview/showslargecontentviewer) and [UILargeContentViewerInteraction object](https://developer.apple.com/documentation/uikit/uilargecontentviewerinteraction) method.
+
+```swift
+button.showsLargeContentViewer = true
+button.addInteraction(UILargeContentViewerInteraction())
+```

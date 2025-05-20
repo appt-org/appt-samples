@@ -28,3 +28,17 @@ Text(
 );
 ```
 
+If there is not enough room to display scaled text, consider implementing a [Large Content Viewer](https://developer.apple.com/videos/play/wwdc2019/261/). You can use the [large_content_viewer package](https://pub.dev/packages/large_content_viewer) which has support for Android and iOS.
+
+```dart
+LargeContentViewer(
+  scaleFactor: 2.5, // Child will scale 2.5x on long press
+  child: IconButton(
+    icon: Icon(Icons.settings),
+    onPressed: () {
+      // Action
+    },
+    tooltip: 'Settings',
+  ),
+)
+```

@@ -23,3 +23,5 @@ fun fontScalePreviews() {
   Text(text = "This is font scale ${LocalDensity.current.fontScale}")
 }
 ```
+
+If there is not enough room to display scaled text, consider implementing a [Large Content Viewer](https://developer.apple.com/videos/play/wwdc2019/261/).

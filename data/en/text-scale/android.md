@@ -7,3 +7,5 @@ On Android, you can use [Scale-independent Pixels](https://developer.android.com
     <item name="android:textSize">18sp</item>
 </style>
 ```
+
+If there is not enough room to display scaled text, consider implementing a [Large Content Viewer](https://developer.apple.com/videos/play/wwdc2019/261/).
