@@ -1,4 +1,4 @@
-# Input dragging - React native
+# Input dragging - React Native
 
 ```
 Not available, contribute!

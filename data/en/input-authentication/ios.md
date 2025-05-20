@@ -1,6 +1,6 @@
 # Input authentication - iOS
 
-In iOS, ensure that the [`UITextField`](https://developer.apple.com/documentation/uikit/uitextfield) elements used for authentication can be identified by password managers. This means you need to set an appropriate [`UITextContentType`](https://developer.apple.com/documentation/uikit/uitextcontenttype), such as [.username](https://developer.apple.com/documentation/uikit/uitextcontenttype/2866088-username) and [.password](https://developer.apple.com/documentation/uikit/uitextcontenttype/2865813-password).
+On iOS, ensure that the [`UITextField`](https://developer.apple.com/documentation/uikit/uitextfield) elements used for authentication can be identified by password managers. This means you need to set an appropriate [`UITextContentType`](https://developer.apple.com/documentation/uikit/uitextcontenttype), such as [.username](https://developer.apple.com/documentation/uikit/uitextcontenttype/2866088-username) and [.password](https://developer.apple.com/documentation/uikit/uitextcontenttype/2865813-password).
 
 Password managers typically recognize authentication fields based on these properties and can automatically fill in the credentials of the user.
 

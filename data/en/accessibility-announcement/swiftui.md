@@ -4,7 +4,7 @@ In SwiftUI, you can enhance your app's accessibility by announcing interface cha
 
 To achieve this, you can use the [`UIAccessibility`](https://developer.apple.com/documentation/uikit/uiaccessibility) object's [`post`](https://developer.apple.com/documentation/uikit/uiaccessibility/1615194-post) method. By setting the type to [`announcement`](https://developer.apple.com/documentation/uikit/uiaccessibility/notification/1620176-announcement) and providing a `String` argument, you can deliver custom announcements to users who rely on assistive technologies like VoiceOver.
 
-In iOS 17 and higher, you can also use [`AccessibilityNotification`](https://developer.apple.com/documentation/accessibility/accessibilitynotification). In this case, create an [`AccessibilityNotification.Announcement`](https://developer.apple.com/documentation/accessibility/accessibilitynotification/announcement) with a [`String`](https://developer.apple.com/documentation/Swift/String) or [`AttributedString`](https://developer.apple.com/documentation/foundation/attributedstring).
+On iOS 17 and higher, you can also use [`AccessibilityNotification`](https://developer.apple.com/documentation/accessibility/accessibilitynotification). In this case, create an [`AccessibilityNotification.Announcement`](https://developer.apple.com/documentation/accessibility/accessibilitynotification/announcement) with a [`String`](https://developer.apple.com/documentation/Swift/String) or [`AttributedString`](https://developer.apple.com/documentation/foundation/attributedstring).
 
 When providing an `AttributedString`, you can optionally customize the announcement behavior.
 

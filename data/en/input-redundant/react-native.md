@@ -1,4 +1,4 @@
-# Input redundant - React native
+# Input redundant - React Native
 
 ```
 Not available, contribute!

@@ -1,4 +1,4 @@
-# Element obscured - React native
+# Element obscured - React Native
 
 ```
 Not available, contribute!
