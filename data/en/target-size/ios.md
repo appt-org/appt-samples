@@ -1,23 +1,37 @@
 # Target size - iOS
 
-In iOS, ensure that interactive elements have a target size of at least 24x24 points and ideally 44x44 points. This size helps ensure that users can easily interact with targets such as buttons.
+On iOS, ensure that interactive elements have a target size of at least 24x24 points.
+
+The [Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/buttons#Best-practices) recommend a target size of at least 44x44 points.
+
+This size helps ensure that users can easily interact with targets such as buttons.
 
 ```swift
-@IBOutlet weak var stackView: UIStackView!
-@IBOutlet weak var loginButton: UIButton!
+import UIKit
 
-override func viewDidLoad() {
-    super.viewDidLoad()
+class IconButton: UIButton {
+    
+    convenience init(systemImageName: String, accessibilityLabel: String) {
+        self.init(type: .system)
+        
+        let image = UIImage(systemName: systemImageName)
+        self.setImage(image, for: .normal)
+        self.accessibilityLabel = accessibilityLabel
 
-    // Set sufficient spacing between elements
-    stackView.spacing = 24 
+        // Apply 24 points spacing
+        self.contentEdgeInsets = UIEdgeInsets(
+            top: 12,
+            left: 12,
+            bottom: 12,
+            right: 12
+        )
 
-    // Ensure target has sufficient width and height
-    loginButton.contentEdgeInsets = UIEdgeInsets(
-        top: 24,
-        left: 24,
-        bottom: 24,
-        right: 24
-    )
+        // Apply minimum 24 points width and 24 points height
+        self.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.widthAnchor.constraint(greaterThanOrEqualToConstant: 24),
+            self.heightAnchor.constraint(greaterThanOrEqualToConstant: 24)
+        ])
+    }
 }
 ```
