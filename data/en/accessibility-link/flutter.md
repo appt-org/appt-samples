@@ -9,27 +9,27 @@ The [`url_launcher`](https://pub.dev/packages/url_launcher) package can be used 
 ```dart
 RichText(
     text: TextSpan(
-        children: [
-            TextSpan(
-                text: 'Learn more about ',
-            ),
-            Semantics(
-                link: true,
-                label: 'Appt',
-                hint: 'External link',
-                child: TextSpan(
-                    text: 'Appt',
-                    style: TextStyle(
-                        decoration: TextDecoration.underline, 
-                        color: Colors.blue
-                    ),
-                    recognizer: TapGestureRecognizer()..onTap = () {
-                        final url = Uri.parse('https://appt.org')
-                        launchUrl(url)
-                    },
+      style: Theme.of(context).textTheme.bodyMedium,
+      children: [
+        TextSpan(text: "Learn more about "),
+        WidgetSpan(
+            child: Semantics(
+              link: true,
+              hint: "External link",
+              child: GestureDetector(
+                onTap: () => launchUrl(Uri.parse("https://appt.org")),
+                child: Text(
+                  "Appt",
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    color: Theme.of(context).colorScheme.primary,
+                    decorationColor: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
-            ),
-        ],
-    ),
+              )
+            )
+        ),
+      ]
+    )
 );
 ```
