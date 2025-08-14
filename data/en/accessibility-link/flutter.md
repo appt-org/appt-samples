@@ -9,7 +9,6 @@ The [`url_launcher`](https://pub.dev/packages/url_launcher) package can be used 
 ```dart
 RichText(
     text: TextSpan(
-      style: Theme.of(context).textTheme.bodyMedium,
       children: [
         TextSpan(text: "Learn more about "),
         WidgetSpan(
