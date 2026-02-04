@@ -76,6 +76,6 @@ Available values for `textContentType` on iOS:
 ```jsx
 <TextInput
     autoComplete='email'
-    textContentType='emailAdress'
+    textContentType='emailAddress'
 />
 ```
